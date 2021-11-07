@@ -1,0 +1,57 @@
+# dwains_dashboard
+## Created by Seechay
+## More-page add-on: Alexa Whole Home Audio
+## Version: 1.0.0
+
+- type: custom:dwains-flexbox-card
+  items_classes: 'col-xs-12 col-sm-6 col-md-4'
+  cards:
+    - type: vertical-stack
+      cards:
+        - type: entity
+          entity: input_text.alexa_text_input_for_groups
+        - type: horizontal-stack
+          cards:
+            - type: entity
+              entity: input_select.alexa_music_groups
+            - type: horizontal-stack
+              cards:
+                - type: button
+                  tap_action:
+                    action: toggle
+                  entity: script.alexa_input_music
+                  icon: 'mdi:play'
+                  icon_height: 50px
+                  name: Play
+                - type: button
+                  tap_action:
+                    action: toggle
+                  entity: script.stop_alexa_music
+                  icon: 'mdi:stop'
+                  icon_height: 50px
+                  name: Stop All
+    - type: entities
+      style: |
+        ha-card {
+          border-radius: 5px;
+          background-color: var(--dwains-theme-primary);
+          --paper-slider-knob-color: var(--dwains-theme-names);
+          --paper-slider-active-color: var(--dwains-theme-names);
+          --paper-slider-knob-start-color: var(--dwains-theme-grey);
+          --paper-slider-container-color: var(--dwains-theme-grey);
+        }
+      entities:
+      {% for speakers in (data | fromjson)['speakers'] %}
+        - type: 'custom:slider-entity-row'
+          entity: {{ speakers.entity }}
+          icon: 'mdi:speaker'
+        {% if speakers.name %}
+          name: {{ speakers.name }}
+        {% endif %}
+      {% endfor %}
+    - type: vertical-stack
+      cards:
+{% for group in (data | fromjson)['speaker_groups'] %}
+        - type: media-control
+          entity: {{ group.entity }}
+{% endfor -%}

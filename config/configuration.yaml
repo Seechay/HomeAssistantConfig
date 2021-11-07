@@ -1,0 +1,329 @@
+homeassistant:
+  customize: !include customize.yaml
+  packages: !include_dir_named packages
+  auth_providers:
+    - type: homeassistant
+    - type: trusted_networks
+      trusted_networks:
+        - 192.168.2.0/24
+        - 192.168.20.0/24
+      trusted_users:
+        192.168.20.154: !secret tablet_user_id #Tablets can only use tablet user
+        192.168.20.110: !secret tablet_user_id #Tablets can only use tablet user
+
+# Configure a default setup of Home Assistant (frontend, api, etc)
+default_config:
+frontend:
+  themes: !include_dir_merge_named themes/
+
+sun:
+http:
+  use_x_forwarded_for: true
+  trusted_proxies:
+    - 127.0.0.1
+    - 172.16.0.0/12
+    - 172.30.32.0/23
+    - 192.168.2.100
+  # Disabled until my tablets stop ip banning themselves
+  #ip_ban_enabled: true
+  #login_attempts_threshold: 3
+
+# Discover some devices automatically
+discovery:
+
+# Text to speech
+tts:
+  - platform: google_translate
+    service_name: google_say
+
+scene: !include scenes.yaml
+history: !include history.yaml
+recorder: !include recorder.yaml
+sensor: !include sensor.yaml
+binary_sensor: !include binary_sensor.yaml
+template: !include template.yaml
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+switch: !include switches.yaml
+light: !include lights.yaml
+input_boolean: !include input_booleans.yaml
+input_text: !include input_text.yaml
+
+neato:
+    client_id: !secret neato_client_id
+    client_secret: !secret neato_client_secret
+
+nest:
+    client_id: !secret nest_client_id
+    client_secret: !secret nest_client_secret
+    project_id: !secret nest_project_id
+    subscriber_id: !secret nest_subscriber_id
+    
+google:
+    client_id: !secret calendar_client_id
+    client_secret: !secret calendar_client_secret
+
+logger:
+  default: info
+
+rest_command:
+  printrbot_job_command:
+    url: http://192.168.2.25/api/job
+    payload: '{{ payload }}'
+    headers:
+        Content-Type: 'application/json'
+        X-Api-Key: !secret octoprint_api
+    method: POST
+  printrbot_home:
+    url: http://192.168.2.25/api/printer/printhead
+    payload: '{"command": "home", "axes": ["x", "y", "z"]}'
+    headers:
+        Content-Type: 'application/json'
+        X-Api-Key: !secret octoprint_api
+    method: POST
+  printrbot_nozzle_temp:
+    url: http://192.168.2.25/api/printer/tool
+    payload: '{"command": "target", "targets": {"tool0": {{ temp }} }}'
+    headers:
+        Content-Type: 'application/json'
+        X-Api-Key: !secret octoprint_api
+    method: POST
+  printrbot_bed_temp:
+    url: http://192.168.2.25/api/printer/bed
+    payload: '{"command": "target", "target": {{ temp }} }'
+    headers:
+        Content-Type: 'application/json'
+        X-Api-Key: !secret octoprint_api
+    method: POST
+  printrbot_printer_command:
+    url: http://192.168.2.25/api/printer/command
+    payload: '{"command": "{{ cmd }}"}'
+    headers:
+        Content-Type: 'application/json'
+        X-Api-Key: !secret octoprint_api
+    method: POST
+  printrbot_octoprint_shutdown:
+    url: http://192.168.2.25/api/system/commands/core/shutdown
+    headers:
+        X-Api-Key: !secret octoprint_api
+    method: POST
+
+plant:
+  front_door_tree:
+    sensors:
+      moisture: sensor.frontdoortree_moisture
+      battery: sensor.frontdoortree_battery
+      temperature: sensor.frontdoortree_temperature
+      conductivity: sensor.frontdoortree_conductivity
+      brightness: sensor.frontdoortree_light
+
+utility_meter:
+  daily_energy:
+    source: sensor.energy_spent
+    cycle: daily
+    tariffs:
+      - peak
+      - offpeak
+  monthly_energy:
+    source: sensor.energy_spent
+    cycle: monthly
+    tariffs:
+      - peak
+      - offpeak
+  daily_gas:
+    source: sensor.gas_meter
+    name: Daily Gas
+    cycle: daily
+  monthly_gas:
+    source: sensor.gas_meter
+    name: Monthly Gas
+    cycle: monthly
+
+influxdb:
+  host: a0d7b954-influxdb
+  port: 8086
+  database: !secret influxdb_db
+  username: !secret influxdb_username
+  password: !secret influxdb_password
+  max_retries: 3
+  default_measurement: state
+
+notify:
+  - name: pushover
+    platform: pushover
+    api_key: !secret pushover_api_key
+    user_key: !secret pushover_user_key
+  - name: everyone
+    platform: group
+    services:
+      - service: mobile_app_cjs_phone
+      - service: mobile_app_lex_s_iphone
+
+lifx:
+  light:
+    - broadcast: 192.168.20.15 #Sophia 1
+    - broadcast: 192.168.20.16 #Sophia 2
+    - broadcast: 192.168.20.7  #Sophia 3
+    - broadcast: 192.168.20.14 #Office 1
+    - broadcast: 192.168.20.8  #Office 2
+    - broadcast: 192.168.20.10 #Office 3
+    - broadcast: 192.168.20.11 #Living 1
+    - broadcast: 192.168.20.32 #Living 2
+    - broadcast: 192.168.20.12 #Master 1
+    - broadcast: 192.168.20.13 #Master 2
+    - broadcast: 192.168.20.17 #Lexi
+    - broadcast: 192.168.20.18 #CJ
+    - broadcast: 192.168.20.19 #Playroom 1
+    - broadcast: 192.168.20.33 #Playroom 2
+    - broadcast: 192.168.20.34 #Playroom 3
+    
+tplink:
+  discovery: false
+  dimmer:
+    - host: 192.168.20.27 #Bathroom
+    - host: 192.168.20.26 #Outside
+    - host: 192.168.20.56 #Closet
+    - host: 192.168.20.240 #Living Room Back Light
+    - host: 192.168.20.148 #Garage
+  switch:
+    - host: 192.168.20.39 #Kitchen
+    - host: 192.168.20.172 #Foyer
+    
+config_check:
+
+withings:
+  client_id: !secret withings_client_id
+  client_secret: !secret withings_consumer_secret
+
+stream:
+
+camera:
+  - platform: mjpeg
+    name: PrintrBot
+    still_image_url: http://192.168.2.25/webcam/?action=snapshot
+    mjpeg_url: http://192.168.2.25/webcam/?action=stream
+browser_mod:
+  devices:
+    a67bc7e3-9e07f9e9:
+      name: seechay-laptop
+    eba69882-ad7edd6e:
+      name: upstairs-tablet
+    06824c54-02424650:
+      name: downstairs-tablet
+  disable:
+    - all
+    
+# Need to remove these at some point and migrate to new format for iOS. 
+ios:
+  push:
+    categories:
+      - name: "Alarm Control iOS" 
+        identifier: 'alarm_notification_ios' 
+        actions: 
+          - identifier: 'ACKNOWLEDGE_ALARM'
+            title: 'No'
+          - identifier: 'SILENCE_ALARM'
+            title: 'Yes'
+            destructive: true
+      - name: "Alarm Arm Home iOS" 
+        identifier: 'arm_home_notification_ios' 
+        actions: 
+          - identifier: 'ARM_ALARM_HOME'
+            title: 'Arm Alarm'
+          - identifier: 'ACKNOWLEDGE_ALARM'
+            title: 'Do Not Arm Alarm'
+            destructive: true
+      - name: "Alarm Arm Away iOS" 
+        identifier: 'arm_away_notification_ios' 
+        actions: 
+          - identifier: 'ARM_ALARM_AWAY'
+            title: 'Arm Alarm'
+          - identifier: 'ACKNOWLEDGE_ALARM'
+            title: 'Do Not Arm Alarm'
+            destructive: true
+      - name: "Vacuum Prompt iOS"
+        identifier: 'vacuum_prompt_ios' 
+        actions: 
+          - identifier: 'CLEAN_HOUSE'
+            title: 'Clean'
+          - identifier: 'DONT_CLEAN_HOUSE'
+            title: 'Do not clean'
+            destructive: true
+      - name: "Vacuum Selection iOS"
+        identifier: 'vacuum_select_ios' 
+        actions: 
+          - identifier: 'VACUUM_UPSTAIRS'
+            title: 'Upstairs'
+          - identifier: 'VACUUM_DOWNSTAIRS'
+            title: 'Downstairs'
+          - identifier: 'VACUUM_BOTH'
+            title: 'Both'
+            
+octoprint:
+  host: 192.168.2.25
+  api_key: !secret octoprint_api
+  name: PrintrBot
+  number_of_tools: 1
+
+monitor_docker:
+  - name: Docker
+    url: tcp://192.168.2.100:2376
+    certpath: '/config/.certs'
+    rename:
+      docker-socket-proxy: Socket Proxy
+      addon_a0d7b954_vscode: VS Code
+      homeassistant: Home Assistant
+      addon_core_ssh: Core SSH
+      addon_a0d7b954_nodered: Node Red
+      addon_a0d7b954_phpmyadmin: PhpMyAdmin
+      hassio_cli: Hass Cli
+      addon_core_configurator: Core Configurator
+      addon_15ef4d2f_esphome: ESPHome
+      addon_core_mosquitto: Mosquitto
+      addon_a0d7b954_influxdb: InfluxDB
+      addon_a0d7b954_motioneye: MotionEye
+      addon_a0d7b954_grafana: Grafana
+      addon_a0d7b954_grocy: Grocy
+      addon_a0d7b954_nginxproxymanager: Nginx Proxy Manager
+      addon_a0d7b954_wireguard: Wireguard
+      addon_cebe7a76_hassio_google_drive_backup: Drive Backup
+      addon_a0d7b954_portainer: Portainer
+      addon_core_samba: Samba
+      addon_core_mariadb: MariaDB
+      hassio_multicast: Hass Multicast
+      hassio_audio: Hass Audio
+      hassio_dns: Hass DNS
+      hassio_supervisor: Hass Supervisor
+      sonarr: Sonarr
+      radarr: Radarr
+      plex: Plex
+      ombi: Ombi
+      nzbhydra2: Nzbhydra2
+      lidarr: Lidarr
+      lazylibrarian: Lazy Librarian
+      jackett: Jackett
+      transmission-openvpn_transmission-openvpn_1: Transmission
+      hassio_observer: Hass Observer
+      frigate: Frigate
+      glances: Glances
+      glances_monitoring_1: Glances Monitoring
+      addon_core_check_config: Config Check
+      teslacamviewer: Tesla Cam Viewer
+      teslamate_database_1: Teslamate Database
+      teslamate_teslamate_1: Teslamate
+      watchtower_watchtower_1: Watchtower
+      wordpress_wordpress_1: Wordpress
+      wordpress_db_1: Wordpress Database
+      readarr: Readarr
+proximity:
+  home:
+    ignored_zones:
+      - cj_work
+      - lexi_work
+      - daycare
+    devices:
+      - person.chad_mandy
+      - person.alexis_mandy
+    tolerance: 50
+    unit_of_measurement: mi

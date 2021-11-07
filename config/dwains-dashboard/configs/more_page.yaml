@@ -1,0 +1,390 @@
+# https://dwainscheeren.github.io/dwains-lovelace-dashboard/configuration/more_page.html
+
+more_page:
+  addons:
+  - name: Weather
+    main_menu: 'true' #Show this addon in the main navigation bar!
+    icon: fas:cloud-sun-rain
+    path: 'dwains-dashboard/addons/more_page/weather/page.yaml'
+  - name: Climate Dashboard
+    icon: mdi:home-thermometer-outline
+    main_menu: 'true' #Show this addon in the main navigation bar!
+    path: 'dwains-dashboard/addons/more_page/climate_dashboard/page.yaml'
+    data:
+      sensors:
+        - card_name: Upstairs
+          graph_entity: sensor.upstairs_temperature
+          button_entity: climate.upstairs
+          button_icon: hass:thermostat
+          info:
+            - entity: sensor.indoor_air_health
+              name: Air Health
+            - entity: sensor.upstairs_humidity
+              name: Humidity
+          more_info:
+            - entity: sensor.pm_2_5_aqi
+              name: AQI
+            - entity: sensor.pm_1_0_um
+              name: PM <1.0 µm
+            - entity: sensor.pm_2_5_um
+              name: PM <2.5 µm
+            - entity: sensor.pm_10_0_um
+              name: PM <10.0 µm
+        - card_name: Downstairs
+          graph_entity: sensor.downstairs_temperature
+          button_entity: climate.downstairs
+          button_icon: hass:thermostat
+          info:
+            - entity: sensor.downstairs_humidity
+              name: Humidity
+        - card_name: Outside
+          graph_entity: sensor.outside_aqara_temperature
+          button_entity: sensor.outside_aqara_temperature
+          button_icon: 'mdi:tree'
+          info:
+              - entity: sensor.outside_aqara_humidity
+                name: Humidity
+              - entity: sensor.outside_aqara_pressure
+                name: Pressure
+        - card_name: Master Bedroom
+          graph_entity: sensor.master_bedroom_aqara_temperature
+          button_entity: sensor.master_bedroom_aqara_temperature
+          button_icon: 'mdi:bed'
+          info:
+              - entity: sensor.master_bedroom_aqara_humidity
+                name: Humidity
+              - entity: sensor.master_bedroom_aqara_pressure
+                name: Pressure
+        - card_name: Master Bathroom
+          graph_entity: sensor.master_bathroom_aqara_temperature
+          button_entity: sensor.master_bathroom_aqara_temperature
+          button_icon: 'mdi:toilet'
+          info:
+              - entity: sensor.master_bathroom_aqara_humidity
+                name: Humidity
+              - entity: sensor.master_bathroom_aqara_pressure
+                name: Pressure
+        - card_name: Master Closet
+          graph_entity: sensor.closet_aqara_temperature
+          button_entity: sensor.closet_aqara_temperature
+          button_icon: 'mdi:hanger'
+          info:
+              - entity: sensor.closet_aqara_humidity
+                name: Humidity
+              - entity: sensor.closet_aqara_pressure
+                name: Pressure
+        - card_name: Playroom
+          graph_entity: sensor.playroom_aqara_temperature
+          button_entity: sensor.playroom_aqara_temperature
+          button_icon: 'mdi:toy-brick'
+          info:
+              - entity: sensor.playroom_aqara_humidity
+                name: Humidity
+              - entity: sensor.playroom_aqara_pressure
+                name: Pressure
+        - card_name: Sophia's Room
+          graph_entity: sensor.sophias_room_aqara_temperature
+          button_entity: sensor.sophias_room_aqara_temperature
+          button_icon: 'mdi:bed'
+          info:
+              - entity: sensor.sophias_room_aqara_humidity
+                name: Humidity
+              - entity: sensor.sophias_room_aqara_pressure
+                name: Pressure
+        - card_name: Office
+          graph_entity: sensor.office_aqara_temperature
+          button_entity: sensor.office_aqara_temperature
+          button_icon: 'mdi:chair-rolling'
+          info:
+              - entity: sensor.office_aqara_humidity
+                name: Humidity
+              - entity: sensor.office_aqara_pressure
+                name: Pressure
+        - card_name: Foyer
+          graph_entity: sensor.foyer_aqara_temperature
+          button_entity: sensor.foyer_aqara_temperature
+          button_icon: 'mdi:floor-plan'
+          info:
+              - entity: sensor.foyer_aqara_humidity
+                name: Humidity
+              - entity: sensor.foyer_aqara_pressure
+                name: Pressure
+        - card_name: Living Room
+          graph_entity: sensor.living_room_aqara_temperature
+          button_entity: sensor.living_room_aqara_temperature
+          button_icon: 'mdi:sofa'
+          info:
+              - entity: sensor.living_room_aqara_humidity
+                name: Humidity
+              - entity: sensor.living_room_aqara_pressure
+                name: Pressure
+        - card_name: Kitchen
+          graph_entity: sensor.kitchen_aqara_temperature
+          button_entity: sensor.kitchen_aqara_temperature
+          button_icon: 'mdi:food-fork-drink'
+          info:
+              - entity: sensor.kitchen_aqara_humidity
+                name: Humidity
+              - entity: sensor.kitchen_aqara_pressure
+                name: Pressure
+        - card_name: Guest Bedroom
+          graph_entity: sensor.guest_aqara_temperature
+          button_entity: sensor.guest_aqara_temperature
+          button_icon: 'mdi:bed'
+          info:
+              - entity: sensor.guest_aqara_humidity
+                name: Humidity
+              - entity: sensor.guest_aqara_pressure
+                name: Pressure
+        - card_name: Garage
+          graph_entity: sensor.garage_aqara_temperature
+          button_entity: sensor.garage_aqara_temperature
+          button_icon: 'mdi:garage'
+          info:
+              - entity: sensor.garage_aqara_humidity
+                name: Humidity
+              - entity: sensor.garage_aqara_pressure
+                name: Pressure
+        - card_name: Tesla Model 3
+          graph_entity: sensor.tesla_model_3_temperature_sensor_inside
+          button_entity: sensor.tesla_model_3_temperature_sensor_inside
+          button_icon: 'mdi:car-electric'
+          info:
+              - entity: sensor.tesla_model_3_temperature_sensor_outside
+                name: Outside Model 3
+  - name: Automations
+    main_menu: 'true' #Show this addon in the main navigation bar!
+    icon: fas:robot
+    path: 'dwains-dashboard/addons/more_page/automation/page.yaml'
+    data:
+      automation_groups:
+        - group.motion_lights_automations
+        - group.master_bed_automations
+        - group.notification_automations
+      automations:
+        - input_boolean.guest_mode
+        - input_boolean.vacation_mode
+        - input_boolean.automation_vacuuming
+  - name: Chores
+    main_menu: 'true' #Show this addon in the main navigation bar!
+    icon: mdi:broom
+    path: 'dwains-dashboard/addons/more_page/grocy_chores/page.yaml'
+    data:
+      users:
+        - name: CJ
+          id: 1
+        - name: Lexi
+          id: 2
+  - name: Tesla Model 3
+    icon: mdi:car-electric-outline
+    main_menu: 'true' #Show this addon in the main navigation bar!
+    path: 'dwains-dashboard/addons/more_page/tesla/page.yaml'
+  - name: Security Dashboard
+    icon: mdi:shield-check-outline
+    main_menu: 'true' #Show this addon in the main navigation bar!
+    path: 'dwains-dashboard/addons/more_page/security_dashboard/page.yaml'
+    data:
+      sensors:
+        - entity: binary_sensor.front_door_ding
+          name: Front<br>Doorbell
+          icon_on: mdi:doorbell-video
+          icon_off: mdi:doorbell-video
+        - entity: binary_sensor.front_door_motion
+          name: Front Door<br>Motion
+          icon_on: mdi:motion-sensor
+          icon_off: mdi:motion-sensor-off
+        - entity: binary_sensor.foyer_motion
+          name: Foyer<br>Motion
+          icon_on: mdi:motion-sensor
+          icon_off: mdi:motion-sensor-off
+        - entity: binary_sensor.living_room_motion
+          name: Living Room<br>Motion
+          icon_on: mdi:motion-sensor
+          icon_off: mdi:motion-sensor-off
+        - entity: binary_sensor.kitchen_aqara_motion
+          name: Kitchen<br>Motion
+          icon_on: mdi:motion-sensor
+          icon_off: mdi:motion-sensor-off
+        - entity: binary_sensor.playroom_aqara_motion
+          name: Playroom<br>Motion
+          icon_on: mdi:motion-sensor
+          icon_off: mdi:motion-sensor-off
+        - entity: binary_sensor.sophias_room_aqara_motion
+          name: Sophia's Room<br>Motion
+          icon_on: mdi:motion-sensor
+          icon_off: mdi:motion-sensor-off
+        - entity: binary_sensor.master_entrance_motion
+          name: Master Door<br>Motion
+          icon_on: mdi:motion-sensor
+          icon_off: mdi:motion-sensor-off
+        - entity: binary_sensor.master_bedroom_aqara_motion
+          name: Master<br>Motion
+          icon_on: mdi:motion-sensor
+          icon_off: mdi:motion-sensor-off
+        - entity: binary_sensor.master_motion
+          name: Master TV<br>Motion
+          icon_on: mdi:motion-sensor
+          icon_off: mdi:motion-sensor-off
+        - entity: binary_sensor.master_bathroom_aqara_motion
+          name: Master Bath<br>Motion
+          icon_on: mdi:motion-sensor
+          icon_off: mdi:motion-sensor-off
+        - entity: binary_sensor.closet_aqara_motion
+          name: Closet<br>Motion
+          icon_on: mdi:motion-sensor
+          icon_off: mdi:motion-sensor-off
+        - entity: binary_sensor.office_hallway_aqara_motion
+          name: Office Hallway<br>Motion
+          icon_on: mdi:motion-sensor
+          icon_off: mdi:motion-sensor-off
+        - entity: binary_sensor.office_left
+          name: Office Left<br>Motion
+          icon_on: mdi:motion-sensor
+          icon_off: mdi:motion-sensor-off
+        - entity: binary_sensor.office_right
+          name: Office Right<br>Motion
+          icon_on: mdi:motion-sensor
+          icon_off: mdi:motion-sensor-off
+        - entity: binary_sensor.sophias_room_aqara_door
+          name: Sophia's Door
+          icon_on: mdi:door-open
+          icon_off: mdi:door-closed
+        - entity: binary_sensor.front_and_garage_doors
+          name: Front Door
+          icon_on: mdi:door-open
+          icon_off: mdi:door-closed
+        - entity: binary_sensor.back_door
+          name: Back Door
+          icon_on: mdi:door-open
+          icon_off: mdi:door-closed
+  - name: Primary Pi-Hole 
+    icon: mdi:pi-hole
+    path: 'dwains-dashboard/addons/more_page/pihole/primary.yaml'
+  - name: Secondary Pi-Hole 
+    icon: mdi:pi-hole
+    path: 'dwains-dashboard/addons/more_page/pihole/secondary.yaml'
+  - name: Docker
+    icon: 'mdi:docker'
+    path: 'dwains-dashboard/addons/more_page/portainer/page.yaml'
+    data:
+      containers:
+        - friendly_name: ESPHome
+          name: addon_15ef4d2f_esphome
+        - friendly_name: Grafana
+          name: addon_a0d7b954_grafana
+        - friendly_name: Grocy
+          name: addon_a0d7b954_grocy
+        - friendly_name: InfluxDB
+          name: addon_a0d7b954_influxdb
+        - friendly_name: Nginx Proxy Manager
+          name: addon_a0d7b954_nginxproxymanager
+        - friendly_name: Node Red
+          name: addon_a0d7b954_nodered
+        - friendly_name: PhpMyAdmin
+          name: addon_a0d7b954_phpmyadmin
+        - friendly_name: Portainer
+          name: addon_a0d7b954_portainer
+        - friendly_name: VS Code
+          name: addon_a0d7b954_vscode
+        - friendly_name: Wireguard
+          name: addon_a0d7b954_wireguard
+        - friendly_name: Drive Backup
+          name: addon_cebe7a76_hassio_google_drive_backup
+        - friendly_name: Config Check
+          name: addon_core_check_config
+        - friendly_name: Core Configurator
+          name: addon_core_configurator
+        - friendly_name: MariaDB
+          name: addon_core_mariadb
+        - friendly_name: Mosquitto
+          name: addon_core_mosquitto
+        - friendly_name: Core SSH
+          name: addon_core_ssh
+        - friendly_name: Socket Proxy
+          name: docker_socket_proxy
+        - friendly_name: Frigate
+          name: frigate
+        - friendly_name: Glances
+          name: glances
+        - friendly_name: Glances Monitoring
+          name: glances_monitoring_1
+        - friendly_name: Hass Audio
+          name: hassio_audio
+        - friendly_name: Hass Cli
+          name: hassio_cli
+        - friendly_name: Hass DNS
+          name: hassio_dns
+        - friendly_name: Hass Multicast
+          name: hassio_multicast
+        - friendly_name: Hass Observer
+          name: hassio_observer
+        - friendly_name: Hass Supervisor
+          name: hassio_supervisor
+        - friendly_name: Home Assistant
+          name: homeassistant
+        - friendly_name: Jackett
+          name: jackett
+        - friendly_name: Lazy Librarian
+          name: lazylibrarian
+        - friendly_name: Lidarr
+          name: lidarr
+        - friendly_name: Nzbhydra2
+          name: nzbhydra2
+        - friendly_name: Ombi
+          name: ombi
+        - friendly_name: Plex
+          name: plex
+        - friendly_name: Radarr
+          name: radarr
+        - friendly_name: Sonarr
+          name: sonarr
+        - friendly_name: Tesla Cam Viewer
+          name: teslacamviewer
+        - friendly_name: Teslamate Database
+          name: teslamate_database_1
+        - friendly_name: Teslamate
+          name: teslamate_teslamate_1
+        - friendly_name: Transmission
+          name: transmission_openvpn_transmission_openvpn_1
+        - friendly_name: Watchtower
+          name: watchtower_watchtower_1
+        - friendly_name: Wordpress
+          name: wordpress_wordpress_1
+        - friendly_name: Wordpress Database
+          name: wordpress_db_1
+  - name: Ubiquiti UniFi
+    icon: 'mdi:router-network'
+    path: 'dwains-dashboard/addons/more_page/ubiquiti/unifi.yaml'
+  - name: Home Assistant
+    icon: mdi:home-assistant
+    path: 'dwains-dashboard/addons/more_page/ha_monitoring/page.yaml'
+  - name: Alexa Whole Home Audio
+    icon: mdi:music
+    main_menu: 'true' #Show this addon in the main navigation bar!
+    path: 'dwains-dashboard/addons/more_page/alexa_sonos/page.yaml'
+    data:
+      speakers:
+        - entity: media_player.echo_master
+          name: Echo Master
+        - entity: media_player.echo_bathroom
+          name: Echo Bathroom
+        - entity: media_player.echo_dot_playroom
+          name: Echo Dot Playroom
+        - entity: media_player.echo_flex_playroom
+          name: Echo Flex Playroom
+        - entity: media_player.echo_dot_office
+          name: Echo Dot Office
+        - entity: media_player.echo_flex_hallway
+          name: Echo Flex Hallway
+        - entity: media_player.echo_dot_living_room
+          name: Echo Dot Living Room
+        - entity: media_player.echo_show_kitchen
+          name: Echo Show Kitchen
+      speaker_groups:
+        - entity: media_player.everywhere
+        - entity: media_player.master
+        - entity: media_player.upstairs
+        - entity: media_player.downstairs
+  - name: PrintrBot
+    icon: 'mdi:printer-3d'
+    path: 'dwains-dashboard/addons/more_page/3D-Printer/page.yaml'

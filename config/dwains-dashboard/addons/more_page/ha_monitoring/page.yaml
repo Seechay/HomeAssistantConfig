@@ -1,0 +1,675 @@
+# Home Assistant Montitoring for Dwains-Theme
+## Version 0.5 by noodlemctwoodle, modified by Seechay
+### Please view the set up guide for this view on GitHub
+
+- type: custom:dwains-flexbox-card
+  padding: true
+  items_classes: 'col-lg-6 col-md-6 col-sm-12 col-xs-12'
+  cards:
+    - type: horizontal-stack
+      cards:
+
+        - type: "custom:button-card"
+          style: |
+            ha-card {
+              border-radius: 10px;
+              box-shadow: 10px;
+              background-position: center;
+          entity: sensor.glances_containers_active
+          name: Containers
+          show_state: true
+          show_name: true
+          show_label: true
+          show_icon: true
+          styles:
+            card:
+              - background-size: contain
+              - background-repeat: no-repeat
+              - background-position: center
+            icon:
+              - width: 27%
+              - margin-top: 1%
+
+
+        - type: "custom:button-card"
+          style: |
+            ha-card {
+              border-radius: 10px;
+              box-shadow: 10px;
+          entity: sensor.current_version
+          show_state: true
+          show_name: true
+          show_label: true
+          show_icon: true
+          styles:
+            card:
+              - background-size: contain
+              - background-repeat: no-repeat
+              - background-position: center
+            icon:
+              - width: 27%
+              - margin-top: 1%
+
+    - type: vertical-stack
+      cards:
+        - type: horizontal-stack
+          cards:
+# Server Disk Space
+            - type: custom:mini-graph-card
+              style: |
+                ha-card {
+                  background: var(--paper-card-background-color);
+                  border-radius: 10px;
+                  box-shadow: 10px;
+                  font-weight: bold;
+                  opacity: 0.8;
+                }
+              entities:
+                - entity: sensor.glances_free
+                  name: System
+                - entity: sensor.hass_db_size
+                  name: HA DB
+                  colour: '#17fa02' # Bright Green
+              name: System Drive
+              hours_to_show: 168
+              update_interval: 10
+              aggregate_func: max
+              height: 80
+              line_width: 2
+              smoothing: true
+              font_size: 65
+              font_size_header: 9
+              show:
+                average: true
+                extrema: true
+              tap_action: none
+            - type: custom:mini-graph-card
+              style: |
+                ha-card {
+                  background: var(--paper-card-background-color);
+                  border-radius: 10px;
+                  box-shadow: 10px;
+                  font-weight: bold;
+                  opacity: 0.8;
+                }
+              entities: 
+                - entity: sensor.glances_mnt_data_free
+                  name: External Drive
+              name: External Drive
+              hours_to_show: 168
+              update_interval: 10
+              aggregate_func: max
+              height: 80
+              line_width: 2
+              smoothing: true
+              font_size: 65
+              font_size_header: 9
+              show:
+                average: true
+                extrema: true
+              tap_action: none
+# CPU Usage
+
+
+
+- type: vertical-stack
+  cards:
+    - type: custom:dwains-flexbox-card
+      padding: true
+      items_classes: 'col-lg-6 col-md-6 col-sm-12 col-xs-12'
+      cards:
+        - type: horizontal-stack
+          cards:
+
+          # Reload Lovelace
+            - type: custom:button-card
+              style: |
+                ha-card {
+                  background: var(--paper-card-background-color);
+                  border-radius: 10px;
+                  box-shadow: 10px;
+                  font-weight: bold;
+                  opacity: 0.8;
+                }
+              name: Reload
+              icon: mdi:heart
+              tap_action:
+                action: call-service
+                service: browser_mod.lovelace_reload
+
+        # Take Home Assistant Snapshot
+            - type: custom:button-card
+              style: |
+                ha-card {
+                  background: var(--paper-card-background-color);
+                  border-radius: 10px;
+                  box-shadow: 10px;
+                  font-weight: bold;
+                  opacity: 0.8;
+                }
+              name: Snapshot
+              icon: mdi:backup-restore
+              tap_action:
+                action: call-service
+                service: hassio.snapshot_full
+
+        # Restart Home Assistant
+            - type: custom:button-card
+              style: |
+                ha-card {
+                  background: var(--paper-card-background-color);
+                  border-radius: 10px;
+                  box-shadow: 10px;
+                  font-weight: bold;
+                  opacity: 0.8;
+                }
+              name: Restart
+              icon: mdi:home-assistant
+              tap_action:
+                action: call-service
+                service: homeassistant.restart
+              confirmation: 
+                text: 'Are you sure you want to restart Home Assistant?'
+
+        # Reboot Home Assistant Host
+            - type: custom:button-card
+              style: |
+                ha-card {
+                  background: var(--paper-card-background-color);
+                  border-radius: 10px;
+                  box-shadow: 10px;
+                  font-weight: bold;
+                  opacity: 0.8;
+                }
+              name: Reboot
+              icon: mdi:server-network
+              tap_action:
+                action: call-service
+                service: hassio.host_reboot
+              confirmation: 
+                text: 'Are you sure you want to restart the host?'
+
+
+        - type: horizontal-stack
+          cards:
+            - type: custom:bar-card
+              style: |
+                :host {
+                  --ha-card-background: var(--paper-card-background-color);
+                  --ha-card-border-radius: 10px;
+                  --ha-card-font-weight: bold;
+                  --ha-card-opacity: 0.8;
+                }
+                ha-card {
+                  font-size: 10px;
+                  box-shadow: 10px;
+                }
+                bar-card-value {
+                  font-size: 8px;
+                }
+              entities: 
+                - entity: sensor.glances_free
+                  name: System Drive
+              show_icon: true
+              height: 57px
+              stack: horizontal
+              positions:
+                name: inside
+                value: inside
+                icon: inside
+              severity:
+                - color: '#fa0505'
+                  from: 0
+                  to: 20
+                - color: '#de4314'
+                  from: 20
+                  to: 100
+                - color: '#d1861d'
+                  from: 100
+                  to: 150
+                - color: '#d4c11c'
+                  from: 150
+                  to: 200
+                - color: '#64c91c'
+                  from: 200
+                  to: 227
+              direction: right
+              tap_action: none
+              max: 227
+              min: 0
+
+        # SSD Data Disk Free
+            - type: custom:bar-card
+              style: |
+                :host {
+                  --ha-card-background: var(--paper-card-background-color);
+                  --ha-card-border-radius: 10px;
+                  --ha-card-font-weight: bold;
+                  --ha-card-opacity: 0.8;
+                }
+                ha-card {
+                  font-size: 10px;
+                  box-shadow: 10px;
+                }
+                bar-card-value {
+                  font-size: 8px;
+                }
+              entities: 
+                - entity: sensor.glances_mnt_data_free
+                  name: External Drive
+              show_icon: true
+              height: 57px
+              stack: horizontal
+              positions:
+                name: inside
+                value: inside
+                icon: inside
+              severity:
+                - color: '#fa0505'
+                  from: 0
+                  to: 3000
+                - color: '#de4314'
+                  from: 3000
+                  to: 6000
+                - color: '#d1861d'
+                  from: 6000
+                  to: 9000
+                - color: '#d4c11c'
+                  from: 9000
+                  to: 12000
+                - color: '#64c91c'
+                  from: 12000
+                  to: 15000
+              direction: right
+              tap_action: none
+              max: 15000
+              min: 0
+
+- type: vertical-stack
+  cards:
+    - type: custom:dwains-flexbox-card
+      padding: true
+      items_classes: 'col-lg-6 col-md-6 col-sm-12 col-xs-12'
+      cards:
+        # CPU Temps
+        - type: horizontal-stack
+          cards:
+            - type: custom:mini-graph-card
+              style: |
+                ha-card {
+                  background: var(--paper-card-background-color);
+                  border-radius: 10px;
+                  box-shadow: 10px;
+                  font-weight: bold;
+                  opacity: 0.8;
+                }
+              entities:
+                - entity: sensor.glances_core_0_temperature
+                  name: CPU0
+                - entity: sensor.glances_core_1_temperature
+                  name: CPU1
+                - entity: sensor.glances_core_2_temperature
+                  name: CPU2
+                - entity: sensor.glances_core_3_temperature
+                  name: CPU3
+                - entity: sensor.glances_package_id_0_temperature
+                  name: CPU Package
+              name: Intel Core i7-4710HQ
+              color_thresholds:
+                - value: 100
+                  color: "#4fcc29"
+                - value: 140
+                  color: "#f39c12"
+                - value: 180
+                  color: "#d35400"
+                - value: 200
+                  color: "#c0392b"
+              hours_to_show: 1
+              points_per_hour: 60
+              update_interval: 10
+              height: 122
+              aggregate_func: max
+              line_width: 2
+              smoothing: false
+              font_size: 65
+              font_size_header: 9
+              show:
+                average: true
+                extrema: true
+              tap_action: none
+
+        # Motherboard Temps
+            - type: custom:mini-graph-card
+              style: |
+                ha-card {
+                  background: var(--paper-card-background-color);
+                  border-radius: 10px;
+                  box-shadow: 10px;
+                  font-weight: bold;
+                  opacity: 0.8;
+                }
+              entities:
+                - entity: sensor.glances_acpitz_1_temperature
+                  name: acpitz1
+                - entity: sensor.glances_acpitz_2_temperature
+                  name: acpitz2
+                - entity: sensor.glances_acpitz_3_temperature
+                  name: acpitz3
+              name: Motherboard
+              hours_to_show: 1
+              points_per_hour: 60
+              update_interval: 10
+              height: 122
+              aggregate_func: max
+              line_width: 2
+              smoothing: false
+              font_size: 65
+              font_size_header: 9
+              show:
+                labels: true
+                average: true
+                extrema: true
+              color_thresholds:
+                - value: 100
+                  color: "#4fcc29"
+                - value: 140
+                  color: "#f39c12"
+                - value: 180
+                  color: "#d35400"
+                - value: 200
+                  color: "#c0392b"
+              tap_action: none
+        - type: horizontal-stack
+          cards:
+          # CPU Usage
+            - type: custom:mini-graph-card
+              style: |
+                ha-card {
+                  background: var(--paper-card-background-color);
+                  border-radius: 10px;
+                  box-shadow: 10px;
+                  font-weight: bold;
+                  opacity: 0.8;
+                }
+              entities:
+                - entity: sensor.glances_cpu_used
+                  name: System
+                  color: '#14ff8d' # Light Green
+                - entity: sensor.glances_containers_cpu_used
+                  name: Containers
+                  color: '#0293fa' # Sky Blue
+              name: CPU Usage
+              icon: mdi:cpu-64-bit
+              hours_to_show: 7
+              points_per_hour: 60
+              update_interval: 10
+              height: 122
+              aggregate_func: max
+              line_width: 2
+              smoothing: false
+              font_size: 65
+              font_size_header: 9
+              show:
+                average: true
+                extrema: true
+              tap_action: none
+
+    # Host Machine RAM Used
+            - type: custom:mini-graph-card
+              style: |
+                ha-card {
+                  background: var(--paper-card-background-color);
+                  border-radius: 10px;    
+                  box-shadow: 10px;
+                  font-weight: bold;
+                  opacity: 0.8;
+                }
+              entities:
+                - entity: sensor.glances_ram_used
+                  name: System
+                  color: '#14ff8d' # Light Green
+                - entity: sensor.glances_containers_ram_used
+                  name: Containers
+                  color: '#0293fa' # Sky Blue
+              name: RAM Usage
+              hours_to_show: 7
+              points_per_hour: 60
+              update_interval: 10
+              height: 122
+              aggregate_func: max
+              line_width: 2
+              smoothing: false
+              font_size: 65
+              font_size_header: 9
+              show:
+                average: true
+                extrema: true
+              tap_action: none
+- type: vertical-stack
+  cards:
+    - type: custom:dwains-flexbox-card
+      padding: true
+      items_classes: 'col-lg-6 col-md-6 col-sm-12 col-xs-12'
+      cards:
+        - type: horizontal-stack
+          cards:
+    # Cloudflare Ping Times
+            - type: custom:mini-graph-card
+              style: |
+                ha-card {
+                  background: var(--paper-card-background-color);
+                  border-radius: 10px;
+                  box-shadow: 10px;
+                  font-weight: bold;
+                }
+              entities:
+                - entity: sensor.cloudflare_dns_ping
+                  name: Cloudflare Ping
+              icon: mdi:speedometer-slow
+              hours_to_show: 24
+              points_per_hour: 60
+              update_interval: 10
+              height: 125
+              aggregate_func: max
+              line_width: 2
+              smoothing: false
+              font_size: 65
+              font_size_header: 9
+              tap_action: none
+              show:
+                average: true
+                extrema: true
+              color_thresholds:
+                - value: 12
+                  color: "#29cf45"
+                - value: 16
+                  color: "#e7ff14"
+                - value: 20
+                  color: "#ff1414"
+
+    # Google Ping Times
+            - type: custom:mini-graph-card
+              style: |
+                ha-card {
+                  background: var(--paper-card-background-color);
+                  border-radius: 10px;
+                  box-shadow: 10px;
+                  font-weight: bold;
+                  opacity: 0.8;
+                }
+              entities:
+                - entity: sensor.google_dns_ping
+                  name: Google Ping
+              icon: mdi:speedometer-slow
+              hours_to_show: 24
+              points_per_hour: 60
+              update_interval: 10
+              height: 125
+              aggregate_func: max
+              line_width: 2
+              smoothing: false
+              font_size: 65
+              font_size_header: 9
+              tap_action: none
+              show:
+                average: true
+                extrema: true
+              color_thresholds:
+                - value: 12
+                  color: "#29cf45"
+                - value: 16
+                  color: "#e7ff14"
+                - value: 20
+                  color: "#ff1414"
+        - type: horizontal-stack
+          cards:
+        # Speedtest.net Download
+            - type: custom:mini-graph-card
+              style: |
+                ha-card {
+                  background: var(--paper-card-background-color);
+                  border-radius: 10px;
+                  box-shadow: 10px;
+                  font-weight: bold;
+                  opacity: 0.8;
+                }
+              entities:
+                - entity: sensor.speedtest_download
+              name: Download
+              hours_to_show: 24
+              points_per_hour: 1
+              update_interval: 60
+              height: 125
+              aggregate_func: max
+              line_width: 2
+              smoothing: false
+              font_size: 65
+              font_size_header: 9
+              tap_action: none
+              show:
+                average: true
+                extrema: true
+              color_thresholds:
+                - value: 900
+                  color: "#29cf45"
+                - value: 500
+                  color: "#e7ff14"
+                - value: 180
+                  color: "#ff1414"
+
+    # Speedtest.net Upload
+            - type: custom:mini-graph-card
+              style: |
+                ha-card {
+                  background: var(--paper-card-background-color);
+                  border-radius: 10px;
+                  box-shadow: 10px;
+                  font-weight: bold;
+                  opacity: 0.8;
+                }
+              entities:
+                - entity: sensor.speedtest_upload
+              name: Upload
+              hours_to_show: 24
+              points_per_hour: 1
+              update_interval: 60
+              height: 125
+              aggregate_func: max
+              line_width: 2
+              smoothing: false
+              font_size: 65
+              font_size_header: 9
+              tap_action: none
+              show:
+                average: true
+                extrema: true
+              color_thresholds:
+                - value: 30
+                  color: "#29cf45"
+                - value: 20
+                  color: "#e7ff14"
+                - value: 10
+                  color: "#ff1414"
+- type: vertical-stack
+  cards:
+    - type: custom:dwains-flexbox-card
+      padding: true
+      items_classes: 'col-lg-6 col-md-6 col-sm-12 col-xs-12'
+      cards:
+        - type: horizontal-stack
+          cards:
+    # Google Coral
+            - type: custom:mini-graph-card
+              style: |
+                ha-card {
+                  background: var(--paper-card-background-color);
+                  border-radius: 10px;
+                  box-shadow: 10px;
+                  font-weight: bold;
+                }
+              entities:
+                - entity: sensor.coral_pci_inference_speed
+                  name: Coral Inference Speed
+              hours_to_show: 24
+              points_per_hour: 60
+              update_interval: 10
+              height: 125
+              aggregate_func: max
+              line_width: 2
+              smoothing: false
+              font_size: 65
+              font_size_header: 9
+              tap_action: none
+              show:
+                average: true
+                extrema: true
+              color_thresholds:
+                - value: 5
+                  color: "#29cf45"
+                - value: 10
+                  color: "#e7ff14"
+                - value: 20
+                  color: "#ff1414"
+
+    # FPS Detection
+            - type: custom:mini-graph-card
+              style: |
+                ha-card {
+                  background: var(--paper-card-background-color);
+                  border-radius: 10px;
+                  box-shadow: 10px;
+                  font-weight: bold;
+                  opacity: 0.8;
+                }
+              entities:
+                - entity: sensor.detection_fps
+                  name: Detection
+                - entity: sensor.frigate_entryway_detection_fps
+                  name : Entryway
+                - entity: sensor.frigate_livingroom_detection_fps
+                  name : Livingroom
+                - entity: sensor.frigate_playroom_detection_fps
+                  name : Playroom
+                - entity: sensor.frigate_sophia_detection_fps
+                  name : Sophia
+              name: Detection FPS
+              hours_to_show: 24
+              points_per_hour: 60
+              update_interval: 10
+              height: 125
+              aggregate_func: max
+              line_width: 2
+              smoothing: false
+              font_size: 65
+              font_size_header: 9
+              tap_action: none
+              show:
+                average: true
+                extrema: true
+              color_thresholds:
+                - value: 15
+                  color: "#29cf45"
+                - value: 30
+                  color: "#e7ff14"
+                - value: 100
+                  color: "#ff1414"

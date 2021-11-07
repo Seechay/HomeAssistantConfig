@@ -1,0 +1,59 @@
+# dwains_dashboard
+## Room add-on: Printer
+## Created by Jeroen Klompen
+## Version: 1.0.4
+
+- type: custom:dwains-flexbox-card
+  items_classes: 'col-xs-12 col-sm-6 col-sm-6'
+  cards:
+    - type: entities
+      style: |
+        ha-card {
+          border-radius: 5px;
+          background-color: var(--dwains-theme-primary);
+        }
+      entities:
+        {{ (data | fromjson)['printer'] }}
+
+    - type: 'custom:bar-card'
+      style: |
+        ha-card {
+          border-radius: 5px;
+          background-color: var(--dwains-theme-primary);
+        }
+        bar-card-value, bar-card-iconbar {
+          color: white;
+          font-weight: bold;
+        }
+        bar-card-name {
+          color: var(--name-color-on);
+          text-transform: capitalize;
+        }
+        .value-direction-up {
+          margin-top:  4px;
+        }
+        .contentbar-direction-up {
+          justify-content: center;
+        }
+        bar-card-backgroundbar, bar-card-currentbar {
+          border-radius: 5px;
+        }
+      direction: up
+      stack: horizontal
+      positions:
+        icon: inside
+        name: outside
+        value: inside
+      height: 200px
+      target: 10
+      unit_of_measurement: '%'
+      width: 100%
+      entities:
+      {% for cartridges in (data | fromjson)['cartridges'] %}
+        - entity: {{ cartridges.entity }}
+        {% if cartridges.name %}
+          name: {{ cartridges.name }}
+        {% endif %}
+          color: {{ cartridges.color }}
+          icon: mdi:water
+      {% endfor %}

@@ -1,0 +1,39 @@
+- platform: group
+  name: Playroom Lights
+  entities:
+    - light.playroom_1
+    - light.playroom_2
+    - light.playroom_3
+- platform: group
+  name: Living Room Lights
+  entities:
+    - light.living_room_1
+    - light.living_room_2
+- platform: group
+  name: Master Lights
+  entities:
+    - light.master_1
+    - light.master_2
+- platform: group
+  name: Office Lights
+  entities:
+    - light.office_1
+    - light.office_2
+    - light.office_3
+- platform: group
+  name: Sophia's Room Lights
+  entities:
+    - light.sophia_1
+    - light.sophia_2
+    - light.sophia_3
+- platform: group
+  name: Nightstand Lights
+  entities:
+    - light.cj
+    - light.lexi
+- platform: switch
+  name: Kitchen Lights
+  entity_id: switch.kitchen
+- platform: switch
+  name: Foyer Lights
+  entity_id: switch.foyer

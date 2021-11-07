@@ -1,0 +1,99 @@
+# dwains_dashboard
+## Room add-on: Tesla
+## Created by Seechay
+## Version: 1.0.0
+
+- type: picture-elements
+  image: /local/images/other/model3.png
+  elements:
+  {% for g in (data | fromjson)['sensors'] %}
+  - type: state-icon
+    entity: {{ g.entity }}
+    style:
+      right: 0
+      top: 5px
+      margin-top: {{ loop.index0*32 }}px
+      transform: initial
+      font-size: 1em
+      line-height: 2em
+      "--paper-item-icon-color": white
+  - type: state-label
+    entity: {{ g.entity }}
+    {% if g.friendly %}attribute: 'friendly_name'{% endif %}
+    style:
+      transform: initial
+      font-size: 1em
+      line-height: 2em
+      top: 5px
+      right: 30px
+      margin-top: {{ loop.index0*32 }}px
+  {% endfor -%}
+  {% for g in (data | fromjson)['lock_sensors'] %}
+  - type: state-icon
+    entity: {{ g.entity }}
+    style:
+      left: 0
+      top: 5px
+      margin-top: {{ loop.index0*32 }}px
+      transform: initial
+      font-size: 1em
+      line-height: 2em
+      "--paper-item-icon-color": white
+  - type: state-label
+    entity: {{ g.entity }}
+    title: {{ g.friendly_name }}
+    prefix: "{{ g.friendly_name }}: "
+    style:
+      transform: initial
+      font-size: 1em
+      line-height: 2em
+      top: 5px
+      left: 30px
+      margin-top: {{ loop.index0*32 }}px
+  {% endfor -%}
+  {% for g in (data | fromjson)['battery_sensors'] %}
+  - type: state-icon
+    entity: {{ g.entity }}
+    style:
+      left: 0
+      bottom: 10px
+      margin-bottom: {{ loop.index0*32 }}px
+      transform: initial
+      font-size: 1em
+      line-height: 2em
+      "--paper-item-icon-color": white
+  - type: state-label
+    entity: {{ g.entity }}
+    title: {{ g.friendly_name }}
+    prefix: "{{ g.friendly_name }}: "
+    style:
+      transform: initial
+      font-size: 1em
+      line-height: 2em
+      bottom: 5px
+      left: 30px
+      margin-bottom: {{ loop.index0*32 }}px
+  {% endfor -%}
+  {% for g in (data | fromjson)['temp_sensors'] %}
+  - type: state-icon
+    entity: {{ g.entity }}
+    style:
+      right: 0
+      bottom: 10px
+      margin-bottom: {{ loop.index0*32 }}px
+      transform: initial
+      font-size: 1em
+      line-height: 2em
+      "--paper-item-icon-color": white
+  - type: state-label
+    entity: {{ g.entity }}
+    title: {{ g.friendly_name }}
+    prefix: "{{ g.friendly_name }}: "
+    style:
+      transform: initial
+      font-size: 1em
+      line-height: 2em
+      bottom: 5px
+      right: 30px
+      margin-bottom: {{ loop.index0*32 }}px
+  {% endfor -%}

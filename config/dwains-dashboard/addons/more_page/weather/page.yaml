@@ -1,0 +1,1032 @@
+## Created by Léon van der Linden, modified by Seechay
+## https://github.com/LRvdLinden
+## More-page add-on: Weather Dashboard
+## Version: 3.0.1
+- type: custom:dwains-flexbox-card
+  items_classes: 'col-xs-12'
+  cards:
+    - type: vertical-stack
+      item_classes: 'col-xs-12 col-sm-4'
+      cards:
+          #Start of rooms and devices
+          - type: custom:dwains-hash-switch-card
+            default: forecast
+            states:
+              #FORECAST VIEW
+              forecast:
+                type: vertical-stack
+                cards:
+                  - type: custom:dwains-flexbox-card
+                    padding: true
+                    cards:
+                      #heading  
+                      - type: horizontal-stack
+                        cards:
+                          - type: custom:button-card
+                            name: Forecast
+                            template: partials_heading_switch
+                            tap_action: 
+                              action: navigate
+                              navigation_path: "#forecast"
+                            styles:
+                              name:
+                                - color: var(--dwains-theme-accent)
+                          - type: custom:button-card
+                            name: Rain
+                            template: partials_heading_switch
+                            tap_action: 
+                              action: navigate
+                              navigation_path: "#rain"
+                          - type: custom:button-card
+                            name: Temp
+                            template: partials_heading_switch
+                            tap_action: 
+                              action: navigate
+                              navigation_path: "#temperature"
+                          - type: custom:button-card
+                            name: Stats
+                            template: partials_heading_switch
+                            tap_action: 
+                              action: navigate
+                              navigation_path: "#stats"
+                  - type: vertical-stack
+                    cards:
+                      - type: 'custom:weather-card'
+                        style: |
+                          ha-card {
+                            border-radius: 10px;
+                            padding-bottom: 10px;
+                            background-color: var(--dwains-theme-primary)
+                          }
+                          :host {
+                            --paper-item-icon-color: var(--dwains-theme-accent) !important;
+                          }
+                          .card-header {
+                            padding: 5px 16px;
+                            font-size: 15px;
+                            font-weight: 700 !important;
+                          }
+                          #states {
+                            padding-top: 0px !important;
+                            padding-bottom: 0px !important;
+                          }
+                          .secondary {
+                            color: darkgray !important;
+                            margin-left: 2px !important;
+                          }
+                        entity: weather.openweathermap
+                        current: true
+                        details: true
+                        forecast: true
+                        hourly_forecast: false
+                        number_of_forecasts: '5'
+                      - type: 'custom:apexcharts-card'
+                        graph_span: 2d
+                        span:
+                          start: hour
+                        header:
+                          show: true
+                          title: Precipitation Forecast
+                        y_axis_precision: 2
+                        series:
+                          - entity: weather.openweathermap
+                            type: area
+                            extend_to_end: true
+                            float_precision: 2
+                            data_generator: |
+                              return entity.attributes.forecast.map((entry) => {
+                                return [new Date(entry.datetime).getTime(), entry.precipitation];
+                              });
+                        apex_config:
+                          yaxis:
+                            decimalsInFloat: 2
+                            title:
+                              text: mm/hr
+                        style: |
+                          ha-card {
+                            border-radius: 10px;
+                            padding-bottom: 10px;
+                            background-color: var(--dwains-theme-primary)
+                          }
+                          :host {
+                            --paper-item-icon-color: var(--dwains-theme-accent) !important;
+                          }
+                          .card-header {
+                            padding: 5px 16px;
+                            font-size: 15px;
+                            font-weight: 700 !important;
+                          }
+                          #states {
+                            padding-top: 0px !important;
+                            padding-bottom: 0px !important;
+                          }
+                          .secondary {
+                            color: darkgray !important;
+                            margin-left: 2px !important;
+                          }
+                      - type: 'custom:ha-card-weather-conditions'
+                        style: |
+                          ha-card {
+                            border-radius: 10px;
+                            padding-bottom: 10px;
+                            background-color: var(--dwains-theme-primary)
+                          }
+                          :host {
+                            --paper-item-icon-color: var(--dwains-theme-accent) !important;
+                          }
+                          .card-header {
+                            padding: 5px 16px;
+                            font-size: 15px;
+                            font-weight: 700 !important;
+                          }
+                          #states {
+                            padding-top: 0px !important;
+                            padding-bottom: 0px !important;
+                          }
+                          .secondary {
+                            color: darkgray !important;
+                            margin-left: 2px !important;
+                          }
+                        uv:
+                          protection_window: binary_sensor.protection_window
+                          ozone_level: sensor.current_ozone_level
+                          uv_index: sensor.current_uv_index
+                          uv_level: sensor.current_uv_level
+                          max_uv_index: sensor.max_uv_index
+                          set_skin_type_1: sensor.skin_type_1_safe_exposure_time
+                          set_skin_type_2: sensor.skin_type_2_safe_exposure_time
+                          set_skin_type_3: sensor.skin_type_3_safe_exposure_time
+                          set_skin_type_4: sensor.skin_type_4_safe_exposure_time
+                          set_skin_type_5: sensor.skin_type_5_safe_exposure_time
+                          set_skin_type_6: sensor.skin_type_6_safe_exposure_time
+                          
+            #RAIN VIEW
+              rain:
+                type: vertical-stack
+                cards:
+                  - type: custom:dwains-flexbox-card
+                    padding: true
+                    cards:
+                      #heading  
+                      - type: horizontal-stack
+                        cards:
+                          - type: custom:button-card
+                            name: Forecast
+                            template: partials_heading_switch
+                            tap_action: 
+                              action: navigate
+                              navigation_path: "#forecast"
+                          - type: custom:button-card
+                            name: Rain
+                            template: partials_heading_switch
+                            tap_action: 
+                              action: navigate
+                              navigation_path: "#rain"
+                            styles:
+                              name:
+                                - color: var(--dwains-theme-accent)
+                          - type: custom:button-card
+                            name: Temp
+                            template: partials_heading_switch
+                            tap_action: 
+                              action: navigate
+                              navigation_path: "#temperature"
+                          - type: custom:button-card
+                            name: Stats
+                            template: partials_heading_switch
+                            tap_action: 
+                              action: navigate
+                              navigation_path: "#stats"
+                    #Rain 
+                  - type: vertical-stack
+                    cards:
+                      - type: 'custom:apexcharts-card'
+                        graph_span: 2d
+                        span:
+                          start: hour
+                        header:
+                          show: true
+                          title: Precipitation Forecast
+                        y_axis_precision: 2
+                        series:
+                          - entity: weather.openweathermap
+                            type: area
+                            extend_to_end: true
+                            float_precision: 2
+                            data_generator: |
+                              return entity.attributes.forecast.map((entry) => {
+                                return [new Date(entry.datetime).getTime(), entry.precipitation];
+                              });
+                        apex_config:
+                          yaxis:
+                            decimalsInFloat: 2
+                            title:
+                              text: mm/hr
+                        style: |
+                          ha-card {
+                            border-radius: 10px;
+                            padding-bottom: 10px;
+                            background-color: var(--dwains-theme-primary)
+                          }
+                          :host {
+                            --paper-item-icon-color: var(--dwains-theme-accent) !important;
+                          }
+                          .card-header {
+                            padding: 5px 16px;
+                            font-size: 15px;
+                            font-weight: 700 !important;
+                          }
+                          #states {
+                            padding-top: 0px !important;
+                            padding-bottom: 0px !important;
+                          }
+                          .secondary {
+                            color: darkgray !important;
+                            margin-left: 2px !important;
+                          }
+                      - type: 'custom:mini-graph-card'
+                        title: Rainfall 24hrs
+                        icon: 'ios:cloud-rain'
+                        style: |
+                          ha-card {
+                            border-radius: 10px;
+                            padding-bottom: 10px;
+                            background-color: var(--dwains-theme-primary)
+                          }
+                          :host {
+                            --paper-item-icon-color: var(--dwains-theme-accent) !important;
+                          }
+                          .card-header {
+                            padding: 5px 16px;
+                            font-size: 15px;
+                            font-weight: 700 !important;
+                          }
+                          #states {
+                            padding-top: 0px !important;
+                            padding-bottom: 0px !important;
+                          }
+                          .secondary {
+                            color: darkgray !important;
+                            margin-left: 2px !important;
+                          }
+                        entities:
+                          - entity: sensor.rainfall_last_24_hours
+                            name: Rainfall Last 24 Hours
+                        line_color: '#299ec2'
+                        hours_to_show: 12
+                        line_width: 1
+                        hour24: true
+                        points_per_hour: 2
+                        decimals: 0
+                        show:
+                          animate: true
+                          fill: true
+                          icon: true
+                          labels: false
+                          legend: false
+                          name: true
+                          graph: bar
+                          extrema: true
+                          average: true   
+                          
+                      - type: 'custom:mini-graph-card'
+                        title: Rain Last Hour
+                        icon: 'ios:cloud-rain'
+                        style: |
+                          ha-card {
+                            border-radius: 10px;
+                            padding-bottom: 10px;
+                            background-color: var(--dwains-theme-primary)
+                          }
+                          :host {
+                            --paper-item-icon-color: var(--dwains-theme-accent) !important;
+                          }
+                          .card-header {
+                            padding: 5px 16px;
+                            font-size: 15px;
+                            font-weight: 700 !important;
+                          }
+                          #states {
+                            padding-top: 0px !important;
+                            padding-bottom: 0px !important;
+                          }
+                          .secondary {
+                            color: darkgray !important;
+                            margin-left: 2px !important;
+                          }
+                        entities:
+                          - entity: sensor.openweathermap_rain
+                            name: Rain Last Hour
+                        line_color: '#299ec2'
+                        hours_to_show: 12
+                        line_width: 1
+                        hour24: true
+                        points_per_hour: 2
+                        decimals: 0
+                        show:
+                          animate: true
+                          fill: true
+                          icon: true
+                          labels: false
+                          legend: false
+                          name: true
+                          graph: bar
+                          extrema: true
+                          average: true   
+ 
+
+            #TEMP VIEW
+              temperature:
+                type: vertical-stack
+                cards:
+                  - type: custom:dwains-flexbox-card
+                    padding: true
+                    cards:
+                      #heading  
+                      - type: horizontal-stack
+                        cards:
+                          - type: custom:button-card
+                            name: Forecast
+                            template: partials_heading_switch
+                            tap_action: 
+                              action: navigate
+                              navigation_path: "#forecast"
+                          - type: custom:button-card
+                            name: Rain
+                            template: partials_heading_switch
+                            tap_action: 
+                              action: navigate
+                              navigation_path: "#rain"
+                          - type: custom:button-card
+                            name: Temp
+                            template: partials_heading_switch
+                            tap_action: 
+                              action: navigate
+                              navigation_path: "#temperature"
+                            styles:
+                              name:
+                                - color: var(--dwains-theme-accent)
+                          - type: custom:button-card
+                            name: Stats
+                            template: partials_heading_switch
+                            tap_action: 
+                              action: navigate
+                              navigation_path: "#stats"
+              #TEMP VIEW
+                  - type: vertical-stack
+                    cards:
+                      - type: 'custom:ha-card-weather-conditions'
+                        style: |
+                          ha-card {
+                            border-radius: 10px;
+                            padding-bottom: 10px;
+                            background-color: var(--dwains-theme-primary)
+                          }
+                          :host {
+                            --paper-item-icon-color: var(--dwains-theme-accent) !important;
+                          }
+                          .card-header {
+                            padding: 5px 16px;
+                            font-size: 15px;
+                            font-weight: 700 !important;
+                          }
+                          #states {
+                            padding-top: 0px !important;
+                            padding-bottom: 0px !important;
+                          }
+                          .secondary {
+                            color: darkgray !important;
+                            margin-left: 2px !important;
+                          }
+                        uv:
+                          protection_window: binary_sensor.protection_window
+                          ozone_level: sensor.current_ozone_level
+                          uv_index: sensor.current_uv_index
+                          uv_level: sensor.current_uv_level
+                          max_uv_index: sensor.max_uv_index
+                          set_skin_type_1: sensor.skin_type_1_safe_exposure_time
+                          set_skin_type_2: sensor.skin_type_2_safe_exposure_time
+                          set_skin_type_3: sensor.skin_type_3_safe_exposure_time
+                          set_skin_type_4: sensor.skin_type_4_safe_exposure_time
+                          set_skin_type_5: sensor.skin_type_5_safe_exposure_time
+                          set_skin_type_6: sensor.skin_type_6_safe_exposure_time
+                      - type: 'custom:mini-graph-card'
+                        title: Outside Temperature
+                        icon: 'ios:thermometer'
+                        style: |
+                          ha-card {
+                            border-radius: 10px;
+                            padding-bottom: 10px;
+                            background-color: var(--dwains-theme-primary)
+                          }
+                          :host {
+                            --paper-item-icon-color: var(--dwains-theme-accent) !important;
+                          }
+                          .card-header {
+                            padding: 5px 16px;
+                            font-size: 15px;
+                            font-weight: 700 !important;
+                          }
+                          #states {
+                            padding-top: 0px !important;
+                            padding-bottom: 0px !important;
+                          }
+                          .secondary {
+                            color: darkgray !important;
+                            margin-left: 2px !important;
+                          }
+                        entities:
+                          - entity: sensor.openweathermap_temperature
+                            name: Temperature
+                        line_color: '#299ec2'
+                        font_size: 80
+                        hours_to_show: 12
+                        line_width: 2
+                        hour24: true
+                        points_per_hour: 2
+                        decimals: 1
+                        show:
+                          animate: true
+                          fill: true
+                          icon: true
+                          labels: true
+                          legend: true
+                          name: true
+                          graph: line
+                          extrema: true
+                          average: true   
+                          
+                      - type: 'custom:mini-graph-card'
+                        title: Feels like temperature
+                        icon: 'ios:thermometer'
+                        style: |
+                          ha-card {
+                            border-radius: 10px;
+                            padding-bottom: 10px;
+                            background-color: var(--dwains-theme-primary)
+                          }
+                          :host {
+                            --paper-item-icon-color: var(--dwains-theme-accent) !important;
+                          }
+                          .card-header {
+                            padding: 5px 16px;
+                            font-size: 15px;
+                            font-weight: 700 !important;
+                          }
+                          #states {
+                            padding-top: 0px !important;
+                            padding-bottom: 0px !important;
+                          }
+                          .secondary {
+                            color: darkgray !important;
+                            margin-left: 2px !important;
+                          }
+                        entities:
+                          - entity: sensor.openweathermap_feels_like_temperature
+                            name: Feels Like Temperature
+                        line_color: '#299ec2'
+                        font_size: 80
+                        hours_to_show: 12
+                        line_width: 2
+                        hour24: true
+                        points_per_hour: 2
+                        decimals: 1
+                        show:
+                          animate: true
+                          fill: true
+                          icon: true
+                          labels: true
+                          legend: true
+                          name: true
+                          graph: line
+                          extrema: true
+                          average: true       
+
+                          
+
+
+              #STATS VIEW
+              stats:
+                type: vertical-stack
+                cards:
+                  - type: custom:dwains-flexbox-card
+                    padding: true
+                    cards:
+                      #heading  
+                      - type: horizontal-stack
+                        cards:
+                          - type: custom:button-card
+                            name: Forecast
+                            template: partials_heading_switch
+                            tap_action: 
+                              action: navigate
+                              navigation_path: "#forecast"
+                          - type: custom:button-card
+                            name: Rain
+                            template: partials_heading_switch
+                            tap_action: 
+                              action: navigate
+                              navigation_path: "#rain"
+                          - type: custom:button-card
+                            name: Temp
+                            template: partials_heading_switch
+                            tap_action: 
+                              action: navigate
+                              navigation_path: "#temperature"
+                          - type: custom:button-card
+                            name: Stats
+                            template: partials_heading_switch
+                            tap_action: 
+                              action: navigate
+                              navigation_path: "#stats"
+                            styles:
+                              name:
+                                - color: var(--dwains-theme-accent)
+                  - type: vertical-stack
+                    cards:
+                      - type: 'custom:ha-card-weather-conditions'
+                        style: |
+                          ha-card {
+                            border-radius: 10px;
+                            padding-bottom: 10px;
+                            background-color: var(--dwains-theme-primary)
+                          }
+                          :host {
+                            --paper-item-icon-color: var(--dwains-theme-accent) !important;
+                          }
+                          .card-header {
+                            padding: 5px 16px;
+                            font-size: 15px;
+                            font-weight: 700 !important;
+                          }
+                          #states {
+                            padding-top: 0px !important;
+                            padding-bottom: 0px !important;
+                          }
+                          .secondary {
+                            color: darkgray !important;
+                            margin-left: 2px !important;
+                          }
+                        pollen:
+                          weed:
+                            entity: sensor.cc_weed_pollen_index_mod
+                            min: 0
+                            max: 5
+                            low: 1
+                            high: 3
+                          grass:
+                            entity: sensor.cc_grass_pollen_index_mod
+                            min: 0
+                            max: 5
+                            low: 1
+                            high: 3
+                          tree:
+                            entity: sensor.cc_tree_pollen_index_mod
+                            min: 0
+                            max: 5
+                            low: 1
+                            high: 3
+                        air_quality:
+                          o3: sensor.cc_o3
+                          pm25: sensor.climacell_particulate_matter_2_5_mm
+                          pm10: sensor.climacell_particulate_matter_10_mm
+                          no2: sensor.climacell_nitrogen_dioxide
+                          co: sensor.climacell_carbon_monoxide
+                          so2: sensor.climacell_sulfur_dioxide
+                          epa_aqi: sensor.climacell_us_epa_air_quality_index
+                          epa_health_concern: sensor.climacell_us_epa_health_concern
+                        uv:
+                          protection_window: binary_sensor.protection_window
+                          ozone_level: sensor.current_ozone_level
+                          uv_index: sensor.current_uv_index
+                          uv_level: sensor.current_uv_level
+                          max_uv_index: sensor.max_uv_index
+                          set_skin_type_1: sensor.skin_type_1_safe_exposure_time
+                          set_skin_type_2: sensor.skin_type_2_safe_exposure_time
+                          set_skin_type_3: sensor.skin_type_3_safe_exposure_time
+                          set_skin_type_4: sensor.skin_type_4_safe_exposure_time
+                          set_skin_type_5: sensor.skin_type_5_safe_exposure_time
+                          set_skin_type_6: sensor.skin_type_6_safe_exposure_time
+                      - type: entities
+                        title: Statistics
+                        style: |
+                          ha-card {
+                            border-radius: 10px;
+                            padding-bottom: 10px;
+                            background-color: var(--dwains-theme-primary)
+                          }
+                          :host {
+                            --paper-item-icon-color: var(--dwains-theme-accent) !important;
+                          }
+                          .card-header {
+                            padding: 5px 16px;
+                            font-size: 15px;
+                            font-weight: 700 !important;
+                          }
+                          #states {
+                            padding-top: 0px !important;
+                            padding-bottom: 0px !important;
+                          }
+                          .secondary {
+                            color: darkgray !important;
+                            margin-left: 2px !important;
+                          }
+                        entities:
+                          - entity: sensor.season
+                          - entity: sensor.moon
+                          - entity: sun.sun
+                          - entity: sensor.nws_alerts
+                          - entity: sensor.openweathermap_condition
+                            name: Visibility
+                          - entity: sensor.openweathermap_cloud_coverage
+                            name: Cloud Cover
+                            icon: mdi:cloud
+                          - entity: sensor.openweathermap_dew_point
+                            name: Dew Point
+                          - entity: sensor.openweathermap_humidity
+                            name: Humidity
+                          - entity: sensor.openweathermap_pressure
+                            name: Pressure
+                          - entity: sensor.openweathermap_wind_speed
+                            name: Wind Speed
+                            icon: mdi:speedometer
+                          - entity: sensor.openweathermap_wind_bearing
+                            name: Wind Direction
+                            icon: 'mdi:compass'
+                          - entity: sensor.openweathermap_temperature
+                            name: Temperature
+ 
+#RADAR VIEWS
+        
+    - type: vertical-stack
+      item_classes: 'col-xs-12 col-sm-8'
+      cards:
+          #Start of rooms and devices
+          - type: custom:dwains-hash-switch-card
+            default: forecast
+            states:
+              #RADAR VIEW 
+              forecast:
+                type: vertical-stack
+                cards:
+                  - type: custom:dwains-flexbox-card
+                    padding: true
+                    cards:
+                      #heading  
+                      - type: horizontal-stack
+                        cards:
+                          - type: custom:button-card
+                            name: Radar
+                            template: partials_heading_switch
+                            tap_action: 
+                              action: navigate
+                              navigation_path: "#forecast"
+                            styles:
+                              name:
+                                - color: var(--dwains-theme-accent)
+                          - type: custom:button-card
+                            name: Rain
+                            template: partials_heading_switch
+                            tap_action: 
+                              action: navigate
+                              navigation_path: "#rain"
+                          - type: custom:button-card
+                            name: Temp
+                            template: partials_heading_switch
+                            tap_action: 
+                              action: navigate
+                              navigation_path: "#temperature"
+                          - type: custom:button-card
+                            name: Wind
+                            template: partials_heading_switch
+                            tap_action: 
+                              action: navigate
+                              navigation_path: "#wind"
+                          - type: custom:button-card
+                            #name: Stats # <- DONT CHANGE THIS LINE
+                            template: partials_heading_switch
+                            tap_action: 
+                              action: navigate
+                              navigation_path: "#stats"
+                  - type: iframe
+                    style: |
+                      ha-card {
+                        border-radius: 10px;
+                        padding-bottom: 10px;
+                        background-color: var(--dwains-theme-primary)
+                      }
+                       :host {
+                         --paper-item-icon-color: var(--dwains-theme-accent) !important;
+                      }
+                      .card-header {
+                        padding: 5px 16px;
+                        font-size: 15px;
+                        font-weight: 700 !important;
+                      }
+                      #states {
+                        padding-top: 0px !important;
+                        padding-bottom: 0px !important;
+                      }
+                      .secondary {
+                        color: darkgray !important;
+                        margin-left: 2px !important;
+                      }
+                    aspect_ratio: 80%
+                    url: >-
+                      https://embed.windy.com/embed2.html?lat=32.181&lon=-110.973&detailLat=32.181&detailLon=-110.973&width=750&height=800&zoom=11&level=surface&overlay=radar&product=radar&menu=&message=&marker=&calendar=now&pressure=&type=map&location=coordinates
+                    name: Windy.com
+                    show_state: false
+              #RAIN VIEW 
+              rain:
+                type: vertical-stack
+                cards:
+                  - type: custom:dwains-flexbox-card
+                    padding: true
+                    cards:
+                      #heading  
+                      - type: horizontal-stack
+                        cards:
+                          - type: custom:button-card
+                            name: Radar
+                            template: partials_heading_switch
+                            tap_action: 
+                              action: navigate
+                              navigation_path: "#forecast"
+                          - type: custom:button-card
+                            name: Rain
+                            template: partials_heading_switch
+                            tap_action: 
+                              action: navigate
+                              navigation_path: "#rain"
+                            styles:
+                              name:
+                                - color: var(--dwains-theme-accent)
+                          - type: custom:button-card
+                            name: Temp
+                            template: partials_heading_switch
+                            tap_action: 
+                              action: navigate
+                              navigation_path: "#temperature"
+                          - type: custom:button-card
+                            name: Wind
+                            template: partials_heading_switch
+                            tap_action: 
+                              action: navigate
+                              navigation_path: "#wind"
+                          - type: custom:button-card
+                            #name: Stats # <- DONT CHANGE THIS LINE
+                            template: partials_heading_switch
+                            tap_action: 
+                              action: navigate
+                              navigation_path: "#stats"
+                    #rain row 1   
+                  - type: iframe
+                    style: |
+                      ha-card {
+                        border-radius: 10px;
+                        padding-bottom: 10px;
+                        background-color: var(--dwains-theme-primary)
+                      }
+                       :host {
+                         --paper-item-icon-color: var(--dwains-theme-accent) !important;
+                      }
+                      .card-header {
+                        padding: 5px 16px;
+                        font-size: 15px;
+                        font-weight: 700 !important;
+                      }
+                      #states {
+                        padding-top: 0px !important;
+                        padding-bottom: 0px !important;
+                      }
+                      .secondary {
+                        color: darkgray !important;
+                        margin-left: 2px !important;
+                      }
+                    aspect_ratio: 80%
+                    url: >-
+                      https://embed.windy.com/embed2.html?lat=32.181&lon=-110.973&detailLat=32.181&detailLon=-110.973&width=750&height=800&zoom=11&level=surface&overlay=rain&product=ecmwf&menu=&message=true&marker=&calendar=now&pressure=&type=map&location=coordinates
+                    name: Windy.com
+                    show_state: false
+                    show_name: false
+              #WIND VIEW 
+              wind:
+                type: vertical-stack
+                cards:
+                  - type: custom:dwains-flexbox-card
+                    padding: true
+                    cards:
+                      #heading  
+                      - type: horizontal-stack
+                        cards:
+                          - type: custom:button-card
+                            name: Radar
+                            template: partials_heading_switch
+                            tap_action: 
+                              action: navigate
+                              navigation_path: "#forecast"
+                          - type: custom:button-card
+                            name: Rain
+                            template: partials_heading_switch
+                            tap_action: 
+                              action: navigate
+                              navigation_path: "#rain"
+                          - type: custom:button-card
+                            name: Temp
+                            template: partials_heading_switch
+                            tap_action: 
+                              action: navigate
+                              navigation_path: "#temperature"
+                          - type: custom:button-card
+                            name: Wind
+                            template: partials_heading_switch
+                            tap_action: 
+                              action: navigate
+                              navigation_path: "#wind"
+                            styles:
+                              name:
+                                - color: var(--dwains-theme-accent)
+                          - type: custom:button-card
+                            #name: Stats # <- DONT CHANGE THIS LINE
+                            template: partials_heading_switch
+                            tap_action: 
+                              action: navigate
+                              navigation_path: "#stats"              
+                    #wind row 1   
+                  - type: iframe
+                    style: |
+                      ha-card {
+                        border-radius: 10px;
+                        padding-bottom: 10px;
+                        background-color: var(--dwains-theme-primary)
+                      }
+                       :host {
+                         --paper-item-icon-color: var(--dwains-theme-accent) !important;
+                      }
+                      .card-header {
+                        padding: 5px 16px;
+                        font-size: 15px;
+                        font-weight: 700 !important;
+                      }
+                      #states {
+                        padding-top: 0px !important;
+                        padding-bottom: 0px !important;
+                      }
+                      .secondary {
+                        color: darkgray !important;
+                        margin-left: 2px !important;
+                      }
+                    aspect_ratio: 80%
+                    url: >-
+                      https://embed.windy.com/embed2.html?lat=32.181&lon=-110.973&detailLat=32.181&detailLon=-110.973&width=750&height=800&zoom=11&level=surface&overlay=wind&product=ecmwf&menu=&message=true&marker=&calendar=now&pressure=&type=map&location=coordinates
+                    name: Windy.com
+                    show_state: false
+                    show_name: false
+ 
+              #TEMP VIEW 
+              temperature:
+                type: vertical-stack
+                cards:
+                  - type: custom:dwains-flexbox-card
+                    padding: true
+                    cards:
+                      #heading  
+                      - type: horizontal-stack
+                        cards:
+                          - type: custom:button-card
+                            name: Radar
+                            template: partials_heading_switch
+                            tap_action: 
+                              action: navigate
+                              navigation_path: "#forecast"
+                          - type: custom:button-card
+                            name: Rain
+                            template: partials_heading_switch
+                            tap_action: 
+                              action: navigate
+                              navigation_path: "#rain"
+                          - type: custom:button-card
+                            name: Temp
+                            template: partials_heading_switch
+                            tap_action: 
+                              action: navigate
+                              navigation_path: "#temperature"
+                            styles:
+                              name:
+                                - color: var(--dwains-theme-accent)
+                          - type: custom:button-card
+                            name: Wind
+                            template: partials_heading_switch
+                            tap_action: 
+                              action: navigate
+                              navigation_path: "#wind"
+                          - type: custom:button-card
+                            #name: Stats # <- DONT CHANGE THIS LINE
+                            template: partials_heading_switch
+                            tap_action: 
+                              action: navigate
+                              navigation_path: "#stats"
+                    #iFRAME TEMP                     
+                  - type: iframe
+                    style: |
+                      ha-card {
+                        border-radius: 10px;
+                        padding-bottom: 10px;
+                        background-color: var(--dwains-theme-primary)
+                      }
+                       :host {
+                         --paper-item-icon-color: var(--dwains-theme-accent) !important;
+                      }
+                      .card-header {
+                        padding: 5px 16px;
+                        font-size: 15px;
+                        font-weight: 700 !important;
+                      }
+                      #states {
+                        padding-top: 0px !important;
+                        padding-bottom: 0px !important;
+                      }
+                      .secondary {
+                        color: darkgray !important;
+                        margin-left: 2px !important;
+                      }
+                    aspect_ratio: 80%
+                    url: >-
+                      https://embed.windy.com/embed2.html?lat=32.181&lon=-110.973&detailLat=32.181&detailLon=-110.973&width=750&height=800&zoom=11&level=surface&overlay=temp&product=ecmwf&menu=&message=true&marker=&calendar=now&pressure=&type=map&location=coordinates
+                    name: Windy.com
+                    show_state: false
+                    show_name: false
+      
+              #stats VIEW 
+              stats:
+                type: vertical-stack
+                cards:
+                  - type: custom:dwains-flexbox-card
+                    padding: true
+                    cards:
+                      #heading  
+                      - type: horizontal-stack
+                        cards:
+                          - type: custom:button-card
+                            name: Radar
+                            template: partials_heading_switch
+                            tap_action: 
+                              action: navigate
+                              navigation_path: "#forecast"
+                          - type: custom:button-card
+                            name: Rain
+                            template: partials_heading_switch
+                            tap_action: 
+                              action: navigate
+                              navigation_path: "#rain"
+                          - type: custom:button-card
+                            name: Temp
+                            template: partials_heading_switch
+                            tap_action: 
+                              action: navigate
+                              navigation_path: "#temperature"
+                          - type: custom:button-card
+                            name: Wind
+                            template: partials_heading_switch
+                            tap_action: 
+                              action: navigate
+                              navigation_path: "#wind"
+                          - type: custom:button-card
+                            #name: Stats # <- DONT CHANGE THIS LINE
+                            template: partials_heading_switch
+                            tap_action: 
+                              action: navigate
+                              navigation_path: "#stats"
+                            styles:
+                              name:
+                                - color: var(--dwains-theme-accent)
+                #iFRAME PRESSURE 
+                  - type: iframe
+                    style: |
+                      ha-card {
+                        border-radius: 10px;
+                        padding-bottom: 10px;
+                        background-color: var(--dwains-theme-primary)
+                      }
+                       :host {
+                         --paper-item-icon-color: var(--dwains-theme-accent) !important;
+                      }
+                      .card-header {
+                        padding: 5px 16px;
+                        font-size: 15px;
+                        font-weight: 700 !important;
+                      }
+                      #states {
+                        padding-top: 0px !important;
+                        padding-bottom: 0px !important;
+                      }
+                      .secondary {
+                        color: darkgray !important;
+                        margin-left: 2px !important;
+                      }
+                    aspect_ratio: 80%
+                    url: >-
+                      https://embed.windy.com/embed2.html?lat=32.181&lon=-110.973&detailLat=32.181&detailLon=-110.973&width=750&height=800&zoom=11&level=surface&overlay=pressure&product=ecmwf&menu=&message=true&marker=true&calendar=now&pressure=&type=map&location=coordinates
+                    name: Windy.com
+                    show_state: false
+                    show_name: false

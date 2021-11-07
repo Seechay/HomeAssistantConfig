@@ -1,0 +1,859 @@
+- platform: season
+- platform: moon
+- platform: version
+- platform: time_date
+  display_options:
+    - time
+    - date
+    - date_time
+    - time_date
+    - time_utc
+    - beat
+
+# Ping Sensor Template
+- platform: template
+  sensors:
+    cloudflare_dns_ping:
+      friendly_name: 'Cloudflare'
+      value_template: "{{ state_attr('binary_sensor.cloudflare_dns',
+      'round_trip_time_avg') | round(2) }}"
+      unit_of_measurement: "ms"
+
+    google_dns_ping:
+      friendly_name: 'Google'
+      value_template: "{{ state_attr('binary_sensor.google_dns',
+      'round_trip_time_avg') | round(2) }}"
+      unit_of_measurement: "ms"
+
+- platform: youtube
+  channel_id: UCFKDEp9si4RmHFWJW1vYsMA
+- platform: template
+  sensors:
+      indoor_air_health:
+        friendly_name: "Indoor Air Health"
+        value_template: >-
+          {% if is_state('sensor.pm_2_5_aqi', 'unknown') %}
+            Unknown
+          {% elif states('sensor.pm_2_5_aqi') | float < 50 %}
+            Healthy
+          {% elif states('sensor.pm_2_5_aqi') | float < 100 %}
+            Moderate
+          {% elif states('sensor.pm_2_5_aqi') | float < 150 %}
+            Unhealthy for Sensitive Groups
+          {% elif states('sensor.pm_2_5_aqi') | float < 200 %}
+            Unhealthy 
+          {% elif states('sensor.pm_2_5_aqi') | float < 300 %}
+            Very Unhealthy
+          {% elif states('sensor.pm_2_5_aqi') | float > 301 %}
+            Hazardous
+          {% else %}
+            Unknown
+          {% endif %}
+
+- platform: template
+  sensors:
+    withings_weight_lbs_cj:
+      friendly_name: "withings weight_lbs_cj"
+      unit_of_measurement: 'lbs'
+      value_template: "{{ (states('sensor.withings_weight_kg_cj') | float * 2.20462262185) | round(2) }}"
+      icon_template: mdi:weight-pound
+    withings_weight_lbs_lexi:
+      friendly_name: "withings weight_lbs_lexi"
+      unit_of_measurement: 'lbs'
+      value_template: "{{ (states('sensor.withings_weight_kg_lexi') | float * 2.20462262185) | round(2) }}"
+      icon_template: mdi:weight-pound
+- platform: template
+  sensors:
+    cj_status:
+      value_template: >-
+        {% if states.person.chad_mandy.state | lower == 'home' %}
+          Home
+        {% elif states.person.chad_mandy.state | lower == 'cj_work' %}
+          Work
+        {% elif states.person.chad_mandy.state | lower == 'daycare' %}
+          Daycare
+        {% else %}
+          Away
+        {% endif %}
+      friendly_name: CJ
+      icon_template: >-
+        {% if states.person.chad_mandy.state | lower == 'home' %}
+          mdi:home-account
+        {% elif states.person.chad_mandy.state | lower == 'cj_work' %}
+          mdi:home-currency-usd
+        {% elif states.person.chad_mandy.state | lower == 'daycare' %}
+          mdi:baby-face-outline
+        {% else %}
+          mdi:home-outline
+        {% endif %}
+    lexi_status:
+      value_template: >-
+        {% if states.person.alexis_mandy.state | lower == 'home' %}
+          Home
+        {% elif states.person.alexis_mandy.state | lower == 'lexi_work' %}
+          Work
+        {% elif states.person.alexis_mandy.state | lower == 'daycare' %}
+          Daycare
+        {% else %}
+          Away
+        {% endif %}
+      friendly_name: Lexi
+      icon_template: >-
+        {% if states.person.alexis_mandy.state | lower == 'home' %}
+          mdi:home-account
+        {% elif states.person.alexis_mandy.state | lower == 'lexi_work' %}
+          mdi:home-currency-usd
+        {% elif states.person.alexis_mandy.state | lower == 'daycare' %}
+          mdi:baby-face-outline
+        {% else %}
+          mdi:home-outline
+        {% endif %}
+- platform: template
+  sensors:
+    neato_last_ran: 
+      value_template: >-
+        {% if not as_timestamp(state_attr('script.run_neato_nogo','last_triggered')) %}
+         {{(as_timestamp(state_attr('vacuum.neato', 'clean_start')) - 25200) | timestamp_custom('%m/%d - %I:%M %p') }}
+        {% elif as_timestamp(state_attr('script.run_neato_nogo','last_triggered')) > (as_timestamp(state_attr('vacuum.neato', 'clean_start')) - 25200) %}
+         {{as_timestamp(state_attr('script.run_neato_nogo','last_triggered')) | timestamp_custom('%m/%d - %I:%M %p') }}
+        {%- else -%}
+          {{(as_timestamp(state_attr('vacuum.neato', 'clean_start')) - 25200) | timestamp_custom('%m/%d - %I:%M %p') }}
+        {%- endif %}
+      friendly_name: Neato Last Ran
+    dwayne_last_ran:
+      value_template: >-
+        {{ (states.vacuum.robot.last_changed | as_timestamp) | timestamp_custom('%m/%d - %I:%M %p')  }}
+      friendly_name: Dwayne Last Ran
+
+- platform: template
+  sensors:
+    aqara_guest_temperature_rounded:
+        friendly_name: Temperature
+        value_template: "{{ states('sensor.guest_aqara_temperature') | float | round(1) }}"
+    aqara_closet_temperature_rounded:
+        friendly_name: Temperature
+        value_template: "{{ states('sensor.closet_aqara_temperature') | float | round(1) }}"
+    aqara_foyer_temperature_rounded:
+        friendly_name: Temperature
+        value_template: "{{ states('sensor.foyer_aqara_temperature') | float | round(1) }}"
+    aqara_garage_temperature_rounded:
+        friendly_name: Temperature
+        value_template: "{{ states('sensor.garage_aqara_temperature') | float | round(1) }}"
+    aqara_kitchen_temperature_rounded:
+        friendly_name: Temperature
+        value_template: "{{ states('sensor.kitchen_aqara_temperature') | float | round(1) }}"
+    aqara_living_room_temperature_rounded:
+        friendly_name: Temperature
+        value_template: "{{ states('sensor.living_room_aqara_temperature') | float | round(1) }}"
+    aqara_master_bath_temperature_rounded:
+        friendly_name: Temperature
+        value_template: "{{ states('sensor.master_bathroom_aqara_temperature') | float | round(1) }}"
+    aqara_master_bed_temperature_rounded:
+        friendly_name: Temperature
+        value_template: "{{ states('sensor.master_bedroom_aqara_temperature') | float | round(1) }}"
+    aqara_office_temperature_rounded:
+        friendly_name: Temperature
+        value_template: "{{ states('sensor.office_aqara_temperature') | float | round(1) }}"
+    aqara_outside_temperature_rounded:
+        friendly_name: Temperature
+        value_template: "{{ states('sensor.outside_aqara_temperature') | float | round(1) }}"
+    aqara_playroom_temperature_rounded:
+        friendly_name: Temperature
+        value_template: "{{ states('sensor.playroom_aqara_temperature') | float | round(1) }}"
+    aqara_sophia_temperature_rounded:
+        friendly_name: Temperature
+        value_template: "{{ states('sensor.sophias_room_aqara_temperature') | float | round(1) }}"
+- platform: systemmonitor
+  resources:
+    - type: disk_use_percent
+      arg: /home
+    - type: disk_free
+      arg: /home
+    - type: memory_use_percent
+    - type: swap_use_percent
+    - type: processor_use
+    - type: last_boot
+    - type: ipv4_address
+      arg: enp4s0
+- platform: command_line
+  name: CPU Temperature
+  command: "cat /sys/class/thermal/thermal_zone0/temp"
+  unit_of_measurement: "°C"
+  value_template: '{{ value | multiply(0.001) | round(1) }}'
+- platform: sql
+  db_url: !secret mariadb_url
+  queries:
+    - name: HASS DB size
+      query: 'SELECT table_schema "database", Round(Sum(data_length + index_length) / 1073741824, 2) "value" FROM information_schema.tables WHERE table_schema="homeassistant" GROUP BY table_schema;'
+      column: 'value'
+      unit_of_measurement: GiB
+
+- platform: statistics
+  name: Rainfall last 24 hours
+  entity_id: sensor.openweathermap_rain
+  sampling_size: 24
+  max_age: 24:00
+# Energy sensors (W -> kWh)
+- platform: integration
+  source: sensor.energy_usage
+  name: energy_spent
+  unit_prefix: k
+  unit: kWh
+  round: 2
+- platform: integration
+  source: sensor.air_fryer_usage
+  name: air_fryer_energy
+  unit_prefix: k
+  unit: kWh
+  round: 2
+  method: left
+- platform: integration
+  source: sensor.coffee_maker_usage
+  name: coffee_maker_energy
+  unit_prefix: k
+  unit: kWh
+  round: 2
+  method: left
+- platform: integration
+  source: sensor.ac_usage
+  name: ac_energy
+  unit_prefix: k
+  unit: kWh
+  round: 2
+  method: left
+- platform: integration
+  source: sensor.always_on_usage
+  name: always_on_energy
+  unit_prefix: k
+  unit: kWh
+  round: 2
+- platform: integration
+  source: sensor.dishwasher_usage
+  name: dishwasher_energy
+  unit_prefix: k
+  unit: kWh
+  round: 2
+  method: left
+- platform: integration
+  source: sensor.dryer_usage
+  name: dryer_energy
+  unit_prefix: k
+  unit: kWh
+  round: 2
+  method: left
+- platform: integration
+  source: sensor.fridge_usage
+  name: fridge_energy
+  unit_prefix: k
+  unit: kWh
+  round: 2
+  method: left
+- platform: integration
+  source: sensor.furnace_usage
+  name: furnace_energy
+  unit_prefix: k
+  unit: kWh
+  round: 2
+  method: left
+- platform: integration
+  source: sensor.garage_door_usage
+  name: garage_door_energy
+  unit_prefix: k
+  unit: kWh
+  round: 2
+  method: left
+- platform: integration
+  source: sensor.humidifier_usage
+  name: humidifier_energy
+  unit_prefix: k
+  unit: kWh
+  round: 2
+  method: left
+- platform: integration
+  source: sensor.hvac_fan_usage
+  name: hvac_fan_energy
+  unit_prefix: k
+  unit: kWh
+  round: 2
+  method: left
+- platform: integration
+  source: sensor.instant_pot_usage
+  name: instant_pot_energy
+  unit_prefix: k
+  unit: kWh
+  round: 2
+  method: left
+- platform: integration
+  source: sensor.microwave_usage
+  name: microwave_energy
+  unit_prefix: k
+  unit: kWh
+  round: 2
+  method: left
+- platform: integration
+  source: sensor.rice_cooker_usage
+  name: rice_cooker_energy
+  unit_prefix: k
+  unit: kWh
+  round: 2
+  method: left
+- platform: integration
+  source: sensor.samsung_tv_usage
+  name: samsung_tv_energy
+  unit_prefix: k
+  unit: kWh
+  round: 2
+  method: left
+- platform: integration
+  source: sensor.other_usage
+  name: other_energy
+  unit_prefix: k
+  unit: kWh
+  round: 2  
+- platform: integration
+  source: sensor.apc_power_consumption
+  name: cj_desk_energy
+  unit_prefix: k
+  unit: kWh
+  round: 2
+- platform: integration
+  source: sensor.apc_power_consumption_2
+  name: network_closet_energy
+  unit_prefix: k
+  unit: kWh
+  round: 2
+- platform: integration
+  source: sensor.cyberpower1_power_consumption
+  name: lexi_desk_energy
+  unit_prefix: k
+  unit: kWh
+  round: 2
+  method: left
+- platform: integration
+  source: sensor.cyberpower2_power_consumption
+  name: entertainment_center_energy
+  unit_prefix: k
+  unit: kWh
+  round: 2  
+- platform: template
+  sensors:
+    apc_power_consumption:
+      value_template: '{{ (states.sensor.apc_load.state | float / (100.0 | float)) * (states.sensor.apc_nominal_real_power.state | float) }}'
+      unit_of_measurement: 'W'
+    apc_power_consumption_2:
+      value_template: '{{ (states.sensor.apc_load_2.state | float / (100.0 | float)) * (states.sensor.apc_nominal_real_power_2.state | float) }}'
+      unit_of_measurement: 'W'
+    cyberpower1_power_consumption:
+      value_template: '{{ (states.sensor.cyberpower1_load.state | float / (100.0 | float)) * (states.sensor.cyberpower1_nominal_real_power.state | float) }}'
+      unit_of_measurement: 'W'
+    cyberpower2_power_consumption:
+      value_template: '{{ (states.sensor.cyberpower2_load.state | float / (100.0 | float)) * (states.sensor.cyberpower2_nominal_real_power.state | float) }}'
+      unit_of_measurement: 'W'
+
+# For adding Pollen:
+- platform: template
+  sensors:
+    cc_grass_pollen_index_mod:
+      friendly_name: Pollen Grass climacell
+      icon_template: 'mdi:flower'
+      value_template: >-
+        {% if is_state('sensor.climacell_grass_pollen_index', 'none') %}
+          0
+        {% elif is_state('sensor.climacell_grass_pollen_index','very_low') %}
+          1
+        {% elif is_state('sensor.climacell_grass_pollen_index','low') %}
+          2
+        {% elif is_state('sensor.climacell_grass_pollen_index','medium') %}
+          3
+        {% elif is_state('sensor.climacell_grass_pollen_index','high') %}
+          4
+        {% elif is_state('sensor.climacell_grass_pollen_index','very_high') %}
+          5
+        {% else %}
+          Unknown
+        {% endif %}
+    cc_tree_pollen_index_mod:
+      friendly_name: Pollen Tree climacell
+      icon_template: 'mdi:tree'
+      value_template: >-
+        {% if is_state('sensor.climacell_tree_pollen_index', 'none') %}
+          0
+        {% elif is_state('sensor.climacell_tree_pollen_index','very_low') %}
+          1
+        {% elif is_state('sensor.climacell_tree_pollen_index','low') %}
+          2
+        {% elif is_state('sensor.climacell_tree_pollen_index','medium') %}
+          3
+        {% elif is_state('sensor.climacell_tree_pollen_index','high') %}
+          4
+        {% elif is_state('sensor.climacell_tree_pollen_index','very_high') %}
+          5
+        {% else %}
+          Unknown
+        {% endif %}
+    cc_weed_pollen_index_mod:
+      friendly_name: Pollen Weed climacell
+      icon_template: 'mdi:sprout'
+      value_template: >-
+        {% if is_state('sensor.climacell_weed_pollen_index', 'none') %}
+          0
+        {% elif is_state('sensor.climacell_weed_pollen_index','very_low') %}
+          1
+        {% elif is_state('sensor.climacell_weed_pollen_index','low') %}
+          2
+        {% elif is_state('sensor.climacell_weed_pollen_index','medium') %}
+          3
+        {% elif is_state('sensor.climacell_weed_pollen_index','high') %}
+          4
+        {% elif is_state('sensor.climacell_weed_pollen_index','very_high') %}
+          5
+        {% else %}
+          Unknown
+        {% endif %}
+
+- platform: template
+  sensors:
+    tesla_model_3_extrapolated_range:
+      friendly_name: "Model 3 Extrapolated Range"
+      value_template: >
+        {% if states('sensor.tesla_model_3_battery_sensor') not in [0, 'unavailable', 'none', 'unknown'] and states('sensor.tesla_model_3_range_sensor') not in [0, 'unavailable', 'none', 'unknown'] %}
+        {{ ((states('sensor.tesla_model_3_range_sensor') | float / states('sensor.tesla_model_3_battery_sensor') | float * 100) | round(3))}}
+        {% else %}
+        0
+        {% endif %}
+      unit_of_measurement: "miles"
+      icon_template: mdi:speedometer
+- platform: template
+  sensors:
+    tesla_model_3_battery_degradation:
+      friendly_name: "Model 3 Battery Degradation"
+      value_template: "{{ ((states('sensor.tesla_model_3_extrapolated_range') | float / 325.0) * 100) | round(3) }}"
+      unit_of_measurement: "%"
+      icon_template: mdi:battery-high
+
+
+# SNMP sensors
+- platform: snmp
+  host: 192.168.2.213
+  name: Downstairs AP Uptime
+  baseoid: 1.3.6.1.2.1.1.3.0
+  value_template: >
+    {%- set time = value | int // 100 %}
+    {%- set minutes = ((time % 3600) // 60) %}
+    {%- set minutes = '{}min'.format(minutes) if minutes > 0 else '' %}
+    {%- set hours = ((time % 86400) // 3600) %}
+    {%- set hours = '{}hr '.format(hours) if hours > 0 else '' %}
+    {%- set days = (time // 86400) %}
+    {%- set days = '{}d '.format(days) if days > 0 else '' %}
+    {{ 'Less than 1 min' if time < 60 else days + hours + minutes }}
+
+- platform: snmp
+  host: 192.168.2.213
+  name: Downstairs AP Model
+  baseoid: 1.3.6.1.4.1.41112.1.6.3.3.0
+
+- platform: snmp
+  host: 192.168.2.213
+  name: Downstairs AP Firmware Version
+  baseoid: 1.3.6.1.4.1.41112.1.6.3.6.0
+
+- platform: snmp
+  host: 192.168.2.250
+  name: Upstairs AP Uptime
+  baseoid: 1.3.6.1.2.1.1.3.0
+  value_template: >
+    {%- set time = value | int // 100 %}
+    {%- set minutes = ((time % 3600) // 60) %}
+    {%- set minutes = '{}min'.format(minutes) if minutes > 0 else '' %}
+    {%- set hours = ((time % 86400) // 3600) %}
+    {%- set hours = '{}hr '.format(hours) if hours > 0 else '' %}
+    {%- set days = (time // 86400) %}
+    {%- set days = '{}d '.format(days) if days > 0 else '' %}
+    {{ 'Less than 1 min' if time < 60 else days + hours + minutes }}
+
+- platform: snmp
+  host: 192.168.2.250
+  name: Upstairs AP Model
+  baseoid: 1.3.6.1.4.1.41112.1.6.3.3.0
+
+- platform: snmp
+  host: 192.168.2.250
+  name: Upstairs AP Firmware Version
+  baseoid: 1.3.6.1.4.1.41112.1.6.3.6.0
+
+- platform: template
+  sensors:
+    unifi_gateway_wan_cpu:
+      friendly_name: "CPU"
+      unit_of_measurement: "%"
+      value_template: "{{ states.sensor.unifi_gateway_wan.attributes['gw_system-stats']['cpu'] }}"
+    unifi_gateway_wan_mem:
+      friendly_name: "Memory"
+      unit_of_measurement: "%"
+      value_template: "{{ states.sensor.unifi_gateway_wan.attributes['gw_system-stats']['mem'] }}"
+    unifi_gateway_wan_ip:
+      friendly_name: 'WAN IP'
+      value_template: '{{ states.sensor.unifi_gateway_wan.attributes.wan_ip }}'
+    unifi_gateway_wan_download:
+      friendly_name: 'WAN Download'
+      unit_of_measurement: Kbps
+      icon_template: "mdi:progress-download"
+      value_template: "{{ (states.sensor.unifi_gateway_wan.attributes['rx_bytes-r'] / 1024) | int }}"
+    unifi_gateway_wan_uptime:
+      friendly_name: "USG Uptime"
+      value_template: >
+        {%- set time = states.sensor.unifi_gateway_wan.attributes['gw_system-stats']['uptime'] | int %}
+        {%- set minutes = ((time % 3600) // 60) %}
+        {%- set minutes = '{}min'.format(minutes) if minutes > 0 else '' %}
+        {%- set hours = ((time % 86400) // 3600) %}
+        {%- set hours = '{}hr '.format(hours) if hours > 0 else '' %}
+        {%- set days = (time // 86400) %}
+        {%- set days = '{}d '.format(days) if days > 0 else '' %}
+        {{ 'Less than 1 min' if time < 60 else days + hours + minutes }}
+    unifi_gateway_firmware_version:
+      friendly_name: "USG Firmware Version"
+      icon_template: "mdi:database-plus"
+      value_template: "{{ states.sensor.unifi_gateway_wan.attributes.gw_version }}"
+    unifi_gateway_www_xput_down:
+      friendly_name: "USG Speedtest Download"
+      unit_of_measurement: Mbps
+      icon_template: "mdi:progress-download"
+      value_template: "{{ states.sensor.unifi_gateway_www.attributes.xput_down }}"
+    unifi_gateway_www_xput_up:
+      friendly_name: "USG Speedtest Upload"
+      unit_of_measurement: Mbps
+      icon_template: "mdi:progress-upload"
+      value_template: "{{ states.sensor.unifi_gateway_www.attributes.xput_up }}"
+    unifi_gateway_www_speedtest_ping:
+      friendly_name: "USG Speedtest Ping"
+      unit_of_measurement: ms
+      icon_template: "mdi:progress-clock"
+      value_template: "{{ states.sensor.unifi_gateway_www.attributes.speedtest_ping }}"
+    unifi_gateway_www_uptime:
+      friendly_name: 'Internet Uptime'
+      value_template: >
+        {%- set time = states.sensor.unifi_gateway_www.attributes.uptime | int %}
+        {%- set minutes = ((time % 3600) // 60) %}
+        {%- set minutes = '{}min'.format(minutes) if minutes > 0 else '' %}
+        {%- set hours = ((time % 86400) // 3600) %}
+        {%- set hours = '{}hr '.format(hours) if hours > 0 else '' %}
+        {%- set days = (time // 86400) %}
+        {%- set days = '{}d '.format(days) if days > 0 else '' %}
+        {{ 'Less than 1 min' if time < 60 else days + hours + minutes }}
+    unifi_gateway_wlan_num_user:
+      friendly_name: 'Users'
+      icon_template: "mdi:account-multiple"
+      value_template: '{{ states.sensor.unifi_gateway_wlan.attributes.num_user }}'
+    unifi_gateway_lan_num_user:
+      friendly_name: 'Users Lan'
+      icon_template: "mdi:account-multiple"
+      value_template: '{{ states.sensor.unifi_gateway_lan.attributes.num_user }}'
+
+## Unifi Gateway sensors // https://github.com/custom-components/sensor.unifigateway
+
+- platform: unifigateway
+  host: 192.168.2.29
+  version: UDMP-unifiOS
+  username: !secret unifi_username
+  password: !secret unifi_password
+  monitored_conditions:
+    - vpn
+    - lan
+    - wan
+    - www
+    - wlan
+    - alerts
+    - firmware
+
+# Vacation lights, records on/off state over last 5 days
+- platform: history_stats
+  name: "replay back_living_room"
+  entity_id: light.back_living_room
+  state: "on"
+  type: count
+  start: >
+    {{ as_timestamp(now()) - (5*86400) }}
+  duration: 00:00:30
+- platform: history_stats
+  name: "replay bathroom"
+  entity_id: light.bathroom
+  state: "on"
+  type: count
+  start: >
+    {{ as_timestamp(now()) - (5*86400) }}
+  duration: 00:00:30
+- platform: history_stats
+  name: "replay nightstand_lights"
+  entity_id: light.nightstand_lights
+  state: "on"
+  type: count
+  start: >
+    {{ as_timestamp(now()) - (5*86400) }}
+  duration: 00:00:30
+- platform: history_stats
+  name: "replay foyer_lights"
+  entity_id: light.foyer_lights
+  state: "on"
+  type: count
+  start: >
+    {{ as_timestamp(now()) - (5*86400) }}
+  duration: 00:00:30
+- platform: history_stats
+  name: "replay kitchen_lights"
+  entity_id: light.kitchen_lights
+  state: "on"
+  type: count
+  start: >
+    {{ as_timestamp(now()) - (5*86400) }}
+  duration: 00:00:30
+- platform: history_stats
+  name: "replay living_room_lights"
+  entity_id: light.living_room_lights
+  state: "on"
+  type: count
+  start: >
+    {{ as_timestamp(now()) - (5*86400) }}
+  duration: 00:00:30
+- platform: history_stats
+  name: "replay master_lights"
+  entity_id: light.master_lights
+  state: "on"
+  type: count
+  start: >
+    {{ as_timestamp(now()) - (5*86400) }}
+  duration: 00:00:30
+- platform: history_stats
+  name: "replay office_lights"
+  entity_id: light.office_lights
+  state: "on"
+  type: count
+  start: >
+    {{ as_timestamp(now()) - (5*86400) }}
+  duration: 00:00:30
+- platform: history_stats
+  name: "replay playroom_lights"
+  entity_id: light.playroom_lights
+  state: "on"
+  type: count
+  start: >
+    {{ as_timestamp(now()) - (5*86400) }}
+  duration: 00:00:30
+- platform: history_stats
+  name: "replay sophia_s_room_lights"
+  entity_id: light.sophia_s_room_lights
+  state: "on"
+  type: count
+  start: >
+    {{ as_timestamp(now()) - (5*86400) }}
+  duration: 00:00:30
+
+- platform: template
+  sensors:
+    unavailable_entities:
+      friendly_name: Unavailable Entities
+      unit_of_measurement: entities
+      icon_template: "{{ 'mdi:check-circle' if is_state('sensor.unavailable_entities','0') else 'mdi:alert-circle' }}"
+      value_template: >
+        {{ states | selectattr('state','in',['unavailable','unknown','none']) |
+          rejectattr('domain','eq','group') |
+          rejectattr('entity_id', 'match', '.*(fire|tasmota).*') |
+          rejectattr('entity_id','in',state_attr('group.ignored_entities','entity_id')) |
+          list | count }}
+      attribute_templates:
+        entities: >
+          {{ states|selectattr('state','in',['unavailable','unknown','none']) |
+            rejectattr('domain','eq','group') |
+            rejectattr('entity_id', 'match', '.*(fire|tasmota).*') |
+            rejectattr('entity_id','in',state_attr('group.ignored_entities','entity_id')) |
+            map(attribute='entity_id') | list }}
+- platform: template
+  sensors:
+    guest_wifi_count:
+      friendly_name: Guest Wifi Count
+      value_template: >
+        {{ states.device_tracker | selectattr('state', 'eq', 'home') | selectattr('attributes.is_guest', 'eq', true) | list | count }}
+      attribute_templates:
+        entities: >
+          {{ states.device_tracker | selectattr('state', 'eq', 'home') | selectattr('attributes.is_guest', 'eq', true) | map(attribute='entity_id') | list }}
+
+- platform: filter
+  name: "filtered cj lowpass"
+  entity_id: sensor.master_bed_sensor_1
+  filters:
+    - filter: lowpass
+      precision: 4
+- platform: filter
+  name: "filtered lexi lowpass"
+  entity_id: sensor.master_bed_sensor_3
+  filters:
+    - filter: outlier
+      window_size: 4
+      radius: 0.001
+    - filter: lowpass
+      precision: 4
+
+- platform: statistics
+  entity_id: sensor.filtered_cj_lowpass
+  name: CJ Bed Sensor
+  precision: 4
+  sampling_size: 3600
+  max_age:
+    hours: 1
+
+- platform: powercalc
+  entity_id: light.living_room_lights
+  multiply_factor: 2
+  linear:
+    min_power: 0.5
+    max_power: 11.5
+- platform: powercalc
+  entity_id: light.master_lights
+  multiply_factor: 2
+  linear:
+    min_power: 0.5
+    max_power: 11.5
+- platform: powercalc
+  entity_id: light.nightstand_lights
+  multiply_factor: 2
+  linear:
+    min_power: 0.5
+    max_power: 11.5
+- platform: powercalc
+  entity_id: light.office_lights
+  multiply_factor: 3
+  linear:
+    min_power: 0.5
+    max_power: 11.5
+- platform: powercalc
+  entity_id: light.playroom_lights
+  multiply_factor: 3
+  linear:
+    min_power: 0.5
+    max_power: 11.5
+- platform: powercalc
+  entity_id: light.sophia_s_room_lights
+  multiply_factor: 3
+  linear:
+    min_power: 0.5
+    max_power: 11.5
+- platform: powercalc
+  entity_id: light.back_living_room
+  multiply_factor: 2
+  linear:
+    min_power: 0.5
+    max_power: 11.5
+- platform: powercalc
+  entity_id: light.bathroom
+  multiply_factor: 4
+  linear:
+    min_power: 0.5
+    max_power: 11.5
+- platform: powercalc
+  entity_id: light.outside
+  multiply_factor: 3
+  linear:
+    min_power: 0.5
+    max_power: 14.5
+- platform: powercalc
+  entity_id: light.closet
+  multiply_factor: 2
+  linear:
+    min_power: 0.5
+    max_power: 26.5
+- platform: powercalc
+  entity_id: light.garage
+  multiply_factor: 2
+  linear:
+    min_power: 0.5
+    max_power: 40.5
+- platform: powercalc
+  entity_id: light.kitchen_lights
+  multiply_factor: 6
+  fixed:
+    power: 11
+  standby_usage: 0.5
+- platform: powercalc
+  entity_id: light.foyer_lights
+  multiply_factor: 2
+  fixed:
+    power: 11
+  standby_usage: 0.5
+- platform: powercalc
+  entity_id: input_select.office_fan
+  fixed:
+    states_power:
+      off: 0
+      low: 25
+      medium: 45
+      high: 75
+- platform: powercalc
+  entity_id: input_select.sophia_fan
+  fixed:
+    states_power:
+      off: 0
+      low: 25
+      medium: 45
+      high: 75
+- platform: powercalc
+  entity_id: input_select.master_fan
+  fixed:
+    states_power:
+      off: 0
+      low: 25
+      medium: 45
+      high: 75
+- platform: powercalc
+  entity_id: input_select.playroom_fan
+  fixed:
+    states_power:
+      off: 0
+      low: 25
+      medium: 45
+      high: 75
+- platform: powercalc
+  entity_id: input_select.livingroom_fan
+  fixed:
+    states_power:
+      off: 0
+      low: 25
+      medium: 45
+      high: 75
+- platform: powercalc
+  entity_id: input_select.guest_fan
+  fixed:
+    states_power:
+      off: 0
+      low: 25
+      medium: 45
+      high: 75
+- platform: template
+  sensors:
+    energy_lights:
+      friendly_name: "All Lights Energy Consumption"
+      unit_of_measurement: kWh
+      value_template: >-
+        {{ states('sensor.foyer_lights_energy') | float + states('sensor.kitchen_lights_energy') | float + states('sensor.living_room_lights_energy') | float + states('sensor.master_lights_energy') | float + states('sensor.nightstand_lights_energy') | float + states('sensor.office_lights_energy') | float + states('sensor.playroom_lights_energy') | float + states('sensor.sophia_s_room_lights_energy') | float }}
+      attribute_templates:
+        last_reset: "1970-01-01T00:00:00+00:00"
+        state_class: measurement
+        device_class: energy
+        icon: mdi:counter
+- platform: template
+  sensors:
+    energy_fan:
+      friendly_name: "All Fans Energy Consumption"
+      unit_of_measurement: kWh
+      value_template: >-
+        {{ states('sensor.guest_fan_energy') | float + states('sensor.livingroom_fan_energy') | float + states('sensor.master_fan_energy') | float + states('sensor.office_fan_energy') | float + states('sensor.playroom_fan_energy') | float + states('sensor.sophia_fan_energy') | float }}
+      attribute_templates:
+        last_reset: "1970-01-01T00:00:00+00:00"
+        state_class: measurement
+        device_class: energy
+        icon: mdi:counter
+
+- platform: mqtt
+  state_topic: "rtlamr/75356912/state"
+  name: "Gas Meter"
+  unit_of_measurement: "ft³"
+  device_class: gas
+  state_class: total_increasing

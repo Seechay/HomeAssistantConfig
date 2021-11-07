@@ -1,0 +1,289 @@
+printrbot_safe_power_down:
+  sequence:
+  - condition: state
+    entity_id: binary_sensor.printrbot_printing
+    state: 'off'
+  - service: rest_command.printrbot_octoprint_shutdown
+    data: {}
+  - delay:
+      seconds: 20
+  - service: switch.turn_off
+    data:
+      entity_id: switch.printrbot_power
+printrbot_cancel_print:
+  sequence:
+  - condition: state
+    entity_id: switch.printrbot_controls
+    state: 'on'
+  - service: rest_command.printrbot_job_command
+    data:
+      payload: '{"command": "cancel"}'
+printrbot_pause_print:
+  sequence:
+  - condition: state
+    entity_id: switch.printrbot_controls
+    state: 'on'
+  - service: rest_command.printrbot_command
+    data:
+      payload: '{"command": "pause", "action": "pause"}'
+printrbot_resume_print:
+  alias: 3D Printer Resume
+  sequence:
+  - condition: state
+    entity_id: switch.printrbot_controls
+    state: 'on'
+  - service: rest_command.printrbot_job_command
+    data:
+      payload: '{"command": "pause", "action": "resume"}'
+printrbot_home:
+  sequence:
+  - condition: state
+    entity_id: switch.printrbot_controls
+    state: 'on'
+  - condition: state
+    entity_id: sensor.printrbot_current_state
+    state: Operational
+  - service: rest_command.printrbot_home
+printrbot_level_bed:
+  sequence:
+  - condition: state
+    entity_id: switch.printrbot_controls
+    state: 'on'
+  - condition: state
+    entity_id: sensor.printrbot_current_state
+    state: Operational
+  - service: rest_command.printrbot_printer_command
+    data:
+      cmd: G29
+printrbot_cooldown:
+  sequence:
+  - condition: state
+    entity_id: switch.printrbot_controls
+    state: 'on'
+  - condition: state
+    entity_id: sensor.printrbot_current_state
+    state: Operational
+  - service: rest_command.printrbot_bed_temp
+    data:
+      temp: 0
+  - service: rest_command.printrbot_nozzle_temp
+    data:
+      temp: 0
+printrbot_preheat_petg:
+  sequence:
+  - condition: state
+    entity_id: switch.printrbot_controls
+    state: 'on'
+  - condition: state
+    entity_id: sensor.printrbot_current_state
+    state: Operational
+  - service: rest_command.printrbot_nozzle_temp
+    data:
+      temp: 215
+printrbot_preheat_pla:
+  sequence:
+  - condition: state
+    entity_id: switch.printrbot_controls
+    state: 'on'
+  - condition: state
+    entity_id: sensor.printrbot_current_state
+    state: Operational
+  - service: rest_command.printrbot_nozzle_temp
+    data:
+      temp: 205
+printrbot_change_filament:
+  sequence:
+  - condition: state
+    entity_id: switch.printrbot_controls
+    state: 'on'
+  - service: rest_command.printrbot_printer_command
+    data:
+      cmd: M600
+alexa_input_music:
+  alias: Play Music on Alexa Groups
+  sequence:
+  - service: media_player.play_media
+    data:
+      entity_id: media_player.echo_master
+      media_content_id: play {{ states('input_text.alexa_text_input_for_groups') }}
+        in {{ states('input_select.alexa_music_groups') }} group
+      media_content_type: custom
+stop_alexa_music:
+  alias: Stop Music on Alexa Devices
+  sequence:
+  - service: media_player.media_stop
+    data: {}
+    target:
+      entity_id:
+      - media_player.echo_dot_office
+      - media_player.echo_bathroom
+      - media_player.echo_dot_living_room
+      - media_player.echo_dot_playroom
+      - media_player.echo_flex_hallway
+      - media_player.echo_flex_playroom
+      - media_player.echo_master
+      - media_player.echo_show_kitchen
+pihole_disable:
+  alias: Pihole Disable
+  icon: mdi:pi-hole
+  sequence:
+  - service: pi_hole.disable
+    data:
+      entity_id: all
+      duration: 00:10:00
+stop_neato:
+  sequence:
+  - service: vacuum.stop
+    data:
+      entity_id: vacuum.neato
+run_neato_nogo:
+  sequence:
+  - service: neato.custom_cleaning
+    data:
+      entity_id: vacuum.neato
+      mode: 2
+      navigation: 2
+      category: 4
+run_neato_nogo_quiet:
+  sequence:
+  - service: vacuum.neato_custom_cleaning
+    data:
+      entity_id: vacuum.neato
+      mode: 1
+      navigation: 2
+      category: 4
+clean_kitchen:
+  alias: Dwayne Clean Kitchen
+  sequence:
+  - service: mqtt.publish
+    data:
+      topic: valetudo/robot/ZoneCleaningCapability/start/set
+      payload: '[ "d3a7cdd4-06b5-491f-adfa-2bfa26d0a862" ]'
+clean_dining_room:
+  alias: Dwayne Clean Dining Room
+  sequence:
+  - service: mqtt.publish
+    data:
+      topic: valetudo/robot/ZoneCleaningCapability/start/set
+      payload: '[ "d281b5cc-1d76-447b-b26a-a5aacb973015" ]'
+clean_living_room:
+  alias: Dwayne Clean Living Room
+  sequence:
+  - service: mqtt.publish
+    data:
+      topic: valetudo/robot/ZoneCleaningCapability/start/set
+      payload: '[ "42fb1122-bc43-425f-b8b3-3bc8db83a02f" ]'
+clean_foyer:
+  alias: Dwayne Clean Foyer
+  sequence:
+  - service: mqtt.publish
+    data:
+      topic: valetudo/robot/ZoneCleaningCapability/start/set
+      payload: '[ "8bfe6a9f-5d10-4aef-83c8-2c7dc5b1a57b" ]'
+clean_hall:
+  alias: Dwayne Clean Hall
+  sequence:
+  - service: mqtt.publish
+    data:
+      topic: valetudo/robot/ZoneCleaningCapability/start/set
+      payload: '[ "f832adb8-cfde-4c82-a3e9-207640cb859e" ]'
+clean_mop:
+  alias: Dwayne Clean Mop
+  sequence:
+  - service: mqtt.publish
+    data:
+      topic: valetudo/robot/ZoneCleaningCapability/start/set
+      payload: '[ "2429748f-1c23-4bd3-b06e-e7127cfbd1e5" ]'
+run_dwayne:
+  alias: Dwayne Clean All
+  sequence:
+  - service: vacuum.start
+    data:
+      entity_id: vacuum.robot
+empty_dwayne:
+  alias: Move Dwayne to garbage
+  sequence:
+  - service: mqtt.publish
+    data:
+      topic: valetudo/robot/GoToLocationCapability/go/set
+      payload: e233247e-a2aa-4ddc-b543-7174757e7d8e
+vacuum_all:
+  sequence:
+  - service: script.turn_on
+    data:
+      entity_id: script.run_dwayne
+  - service: script.turn_on
+    data:
+      entity_id: script.run_neato_nogo
+tesla_prep:
+  alias: Tesla Prep
+  sequence:
+  - service: climate.turn_on
+    target:
+      entity_id: climate.tesla_model_3_hvac_climate_system
+  - delay:
+      hours: 0
+      minutes: 15
+      seconds: 0
+      milliseconds: 0
+  - condition: state
+    entity_id: binary_sensor.tesla_model_3_charger_sensor
+    state: 'on'
+  - service: climate.turn_off
+    target:
+      entity_id: climate.tesla_model_3_hvac_climate_system
+  mode: single
+chore_notification:
+  description: Send an actionable notification for a chore
+  fields:
+    user_id:
+      description: User ID of person completing the chore
+      example: '1'
+    chore_id:
+      description: ID of chore to complete
+      example: '1'
+    chore_desc:
+      description: Description of what the chore is
+      example: Take out the trash
+    notify_device:
+      description: What device to use for notification
+      example: mobile_app_cjs_phone
+  sequence:
+  - alias: Set up variables for the actions
+    variables:
+      action_track: '{{ ''TRACK_'' ~ context.id }}'
+      action_ignore: '{{ ''IGNORE_'' ~ context.id }}'
+  - alias: Ask to track chore or ignore
+    service: notify.{{ notify_device }}
+    data:
+      message: 'The following chore is due: {{ chore_desc }}'
+      data:
+        actions:
+        - action: '{{ action_track }}'
+          title: Track
+        - action: '{{ action_ignore }}'
+          title: Ignore
+  - alias: Wait for a response
+    wait_for_trigger:
+    - platform: event
+      event_type: mobile_app_notification_action
+      event_data:
+        action: '{{ action_track }}'
+    - platform: event
+      event_type: mobile_app_notification_action
+      event_data:
+        action: '{{ action_ignore }}'
+    timeout: '12:00:00'
+    continue_on_timeout: false
+  - alias: Perform the action
+    choose:
+    - conditions:
+      - condition: template
+        value_template: '{{ wait.trigger.event.data.action == action_track }}'
+      sequence:
+      - service: grocy.execute_chore
+        data:
+          chore_id: '{{ chore_id }}'
+          done_by: '{{ user_id }}'
+  mode: parallel
+  max: 100

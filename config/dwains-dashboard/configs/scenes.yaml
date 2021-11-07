@@ -1,0 +1,10 @@
+scenes:
+  entities:
+    - entity: scene.lights_out
+      icon: mdi:lightbulb-multiple-off
+      icon_color: '#ffffff'
+      background: 'linear-gradient( 135deg, #FEB692 10%, #EA5455 100%)'
+    - entity: scene.only_nightstands
+      icon: mdi:lamps
+      icon_color: '#ffffff'
+      background: 'linear-gradient( 135deg, #FEB692 10%, #EA5455 100%)'

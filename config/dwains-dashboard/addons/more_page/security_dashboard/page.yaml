@@ -1,0 +1,197 @@
+# dwains_dashboard
+## Created by Léon van der Linden
+## More-page add-on: Security dashboard
+## Version: 1.0.0
+
+- type: custom:dwains-flexbox-card
+  items_classes: 'col-xs-12 col-sm-6 col-sm-6 col-md-3'
+  cards:
+#alarm panel  
+    - type: vertical-stack
+      cards:
+        - type: 'custom:button-card'
+          name: Alarm panel
+          styles:
+            card:
+              - text-transform: uppercase
+              - color: 'var(--dwains-theme-accent)'
+              - font-size: 125%
+              - border-radius: 0%
+              - font-weight: 100
+              - letter-spacing: 10px
+        - type: alarm-panel
+          cards:
+          states:
+            - arm_away
+          entity: alarm_control_panel.alarm_panel
+          name: Alarm Control Center
+          theme: Backend-selected 
+## Sensors
+        {% for set in (data | fromjson)['sensors'] | batch(3) %}
+        - type: horizontal-stack
+          cards:
+            - type: 'custom:button-card'
+              color_type: blank-card
+              icon: 'mdi:led-strip-variant'
+              name: Floor
+              styles:
+                card:
+                  - width: 5px
+            {% for s in set %}
+            - type: 'custom:button-card'
+              entity: {{ s.entity }}
+              extra_styles: |
+                @keyframes mymove {
+                50% {box-shadow: 0 0 20px red;}
+                }
+              icon: {{ s.icon_off }}
+              name: {{ s.name }}
+              state:
+                - value: 'off'
+                  icon: {{ s.icon_off }}
+                  styles:
+                    card: null
+                    icon:
+                      - width: 45%
+                      - opacity: 0.5
+                      - padding-top: 10px
+                    name:
+                      - padding: 10px
+                      - font-size: 12px
+                      - text-overflow: unset
+                      - white-space: unset
+                      - word-break: break-word
+                - operator: default
+                  color: white
+                  icon: {{ s.icon_on }}
+                  styles:
+                    card:
+                      - animation: mymove 2s infinite
+                    icon:
+                      - width: 45%
+                      - padding-top: 10px
+                      - color: 'rgba(255, 0, 0, 0.6)'
+                    name:
+                      - padding: 10px
+                      - color: red
+                      - font-weight: bold
+                      - font-size: 12px
+                      - text-overflow: unset
+                      - white-space: unset
+                      - word-break: break-word
+            {% endfor -%}
+        {% endfor -%}
+
+
+#Upstairs Cameras
+    - cards:
+        - name: Upstairs
+          styles:
+            card:
+              - text-transform: uppercase
+              - color: 'var(--dwains-theme-accent)'
+              - font-size: 125%
+              - border-radius: 0%
+              - font-weight: 100
+              - letter-spacing: 10px
+          type: 'custom:button-card'
+        - type: picture-entity
+          show_name: false
+          show_state: false
+          entity: camera.frigate_playroom
+        - type: picture-entity
+          show_name: false
+          show_state: false
+          entity: camera.sophia
+      type: vertical-stack
+#Downstairs Cameras 
+    - cards:
+        - name: Downstairs
+          styles:
+            card:
+              - text-transform: uppercase
+              - color: 'var(--dwains-theme-accent)'
+              - font-size: 125%
+              - border-radius: 0%
+              - font-weight: 100
+              - letter-spacing: 10px
+          type: 'custom:button-card'
+        - type: picture-entity
+          show_name: false
+          show_state: false
+          entity: camera.frigate_entryway
+          camera_view: auto
+        - type: picture-entity
+          show_name: false
+          show_state: false
+          entity: camera.frigate_livingroom
+          camera_view: auto
+      type: vertical-stack    
+      
+#Outside Cameras
+    - type: vertical-stack    
+      cards:
+        - name: Outside
+          styles:
+            card:
+              - text-transform: uppercase
+              - color: 'var(--dwains-theme-accent)'
+              - font-size: 125%
+              - border-radius: 0%
+              - font-weight: 100
+              - letter-spacing: 10px
+          type: 'custom:button-card'
+        - type: picture-entity
+          show_name: false
+          show_state: false
+          entity: camera.front_door
+          camera_view: auto
+        - type: picture-glance
+          camera_image: camera.garage_onvif
+          camera_view: live
+          entities:
+            - entity: camera.garage_onvif
+              icon: 'mdi:arrow-down-drop-circle-outline'
+              tap_action:
+                action: call-service
+                service: onvif.ptz
+                service_data:
+                  entity_id: camera.garage_onvif
+                  tilt: DOWN
+                  move_mode: ContinuousMove
+            - entity: camera.garage_onvif
+              icon: 'mdi:arrow-up-drop-circle-outline'
+              tap_action:
+                action: call-service
+                service: onvif.ptz
+                service_data:
+                  entity_id: camera.garage_onvif
+                  tilt: UP
+                  move_mode: ContinuousMove
+            - entity: camera.garage_onvif
+              icon: 'mdi:arrow-left-drop-circle-outline'
+              tap_action:
+                action: call-service
+                service: onvif.ptz
+                service_data:
+                  entity_id: camera.garage_onvif
+                  pan: LEFT
+                  move_mode: ContinuousMove
+            - entity: camera.garage_onvif
+              icon: 'mdi:arrow-right-drop-circle-outline'
+              tap_action:
+                action: call-service
+                service: onvif.ptz
+                service_data:
+                  entity_id: camera.garage_onvif
+                  pan: RIGHT
+                  move_mode: ContinuousMove
+            - entity: camera.garage_onvif
+              icon: 'mdi:reload'
+              tap_action:
+                action: call-service
+                service: onvif.ptz
+                service_data:
+                  entity_id: camera.garage_onvif
+                  preset: '000'
+                  move_mode: GotoPreset

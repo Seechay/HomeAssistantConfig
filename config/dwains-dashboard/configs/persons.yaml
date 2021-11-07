@@ -1,0 +1,6 @@
+# https://dwainscheeren.github.io/dwains-lovelace-dashboard/configuration/persons.html
+persons:   
+  - name: CJ
+    track: person.chad_mandy
+  - name: Lexi
+    track: person.alexis_mandy

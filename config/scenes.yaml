@@ -1,0 +1,455 @@
+- id: '1625259619576'
+  name: Lights Out
+  entities:
+    light.back_living_room:
+      supported_color_modes:
+      - brightness
+      friendly_name: Back Living Room
+      supported_features: 1
+      state: 'off'
+    light.bathroom:
+      supported_color_modes:
+      - brightness
+      friendly_name: Bathroom
+      supported_features: 1
+      state: 'off'
+    light.cj:
+      restored: true
+      min_mireds: 111
+      max_mireds: 400
+      effect_list:
+      - effect_colorloop
+      - effect_pulse
+      - effect_stop
+      supported_color_modes:
+      - color_temp
+      - hs
+      supported_features: 55
+      friendly_name: CJ
+      state: 'off'
+    light.closet:
+      supported_color_modes:
+      - brightness
+      friendly_name: Closet
+      supported_features: 1
+      state: 'off'
+    light.foyer_lights:
+      friendly_name: Foyer
+      state: 'off'
+    light.garage:
+      supported_color_modes:
+      - brightness
+      friendly_name: Garage
+      supported_features: 1
+      state: 'off'
+    light.lexi:
+      min_mireds: 111
+      max_mireds: 400
+      effect_list:
+      - effect_colorloop
+      - effect_pulse
+      - effect_stop
+      supported_color_modes:
+      - color_temp
+      - hs
+      friendly_name: Lexi
+      supported_features: 55
+      state: 'off'
+    light.kitchen_lights:
+      friendly_name: Kitchen
+      state: 'off'
+    light.living_room_1:
+      min_mireds: 111
+      max_mireds: 400
+      effect_list:
+      - effect_colorloop
+      - effect_pulse
+      - effect_stop
+      supported_color_modes:
+      - color_temp
+      - hs
+      friendly_name: Living Room 1
+      supported_features: 55
+      state: 'off'
+    light.living_room_2:
+      min_mireds: 111
+      max_mireds: 400
+      effect_list:
+      - effect_colorloop
+      - effect_pulse
+      - effect_stop
+      supported_color_modes:
+      - color_temp
+      - hs
+      friendly_name: Living Room 2
+      supported_features: 55
+      state: 'off'
+    light.master_1:
+      min_mireds: 111
+      max_mireds: 400
+      effect_list:
+      - effect_colorloop
+      - effect_pulse
+      - effect_stop
+      supported_color_modes:
+      - color_temp
+      - hs
+      friendly_name: Master 1
+      supported_features: 55
+      state: 'off'
+    light.master_2:
+      min_mireds: 111
+      max_mireds: 400
+      effect_list:
+      - effect_colorloop
+      - effect_pulse
+      - effect_stop
+      supported_color_modes:
+      - color_temp
+      - hs
+      friendly_name: Master 2
+      supported_features: 55
+      state: 'off'
+    light.office_1:
+      min_mireds: 111
+      max_mireds: 400
+      effect_list:
+      - effect_colorloop
+      - effect_pulse
+      - effect_stop
+      supported_color_modes:
+      - color_temp
+      - hs
+      friendly_name: Office 1
+      supported_features: 55
+      state: 'off'
+    light.office_2:
+      min_mireds: 111
+      max_mireds: 400
+      effect_list:
+      - effect_colorloop
+      - effect_pulse
+      - effect_stop
+      supported_color_modes:
+      - color_temp
+      - hs
+      friendly_name: Office 2
+      supported_features: 55
+      state: 'off'
+    light.office_3:
+      min_mireds: 111
+      max_mireds: 400
+      effect_list:
+      - effect_colorloop
+      - effect_pulse
+      - effect_stop
+      supported_color_modes:
+      - color_temp
+      - hs
+      friendly_name: Office 3
+      supported_features: 55
+      state: 'off'
+    light.playroom_1:
+      min_mireds: 111
+      max_mireds: 400
+      effect_list:
+      - effect_colorloop
+      - effect_pulse
+      - effect_stop
+      supported_color_modes:
+      - color_temp
+      - hs
+      friendly_name: Playroom 1
+      supported_features: 55
+      state: 'off'
+    light.playroom_2:
+      min_mireds: 111
+      max_mireds: 400
+      effect_list:
+      - effect_colorloop
+      - effect_pulse
+      - effect_stop
+      supported_color_modes:
+      - color_temp
+      - hs
+      friendly_name: Playroom 2
+      supported_features: 55
+      state: 'off'
+    light.playroom_3:
+      min_mireds: 111
+      max_mireds: 400
+      effect_list:
+      - effect_colorloop
+      - effect_pulse
+      - effect_stop
+      supported_color_modes:
+      - color_temp
+      - hs
+      friendly_name: Playroom 3
+      supported_features: 55
+      state: 'off'
+    light.sophia_1:
+      min_mireds: 111
+      max_mireds: 400
+      effect_list:
+      - effect_colorloop
+      - effect_pulse
+      - effect_stop
+      supported_color_modes:
+      - color_temp
+      - hs
+      friendly_name: Sophia 1
+      supported_features: 55
+      state: 'off'
+    light.sophia_2:
+      min_mireds: 111
+      max_mireds: 400
+      effect_list:
+      - effect_colorloop
+      - effect_pulse
+      - effect_stop
+      supported_color_modes:
+      - color_temp
+      - hs
+      friendly_name: Sophia 2
+      supported_features: 55
+      state: 'off'
+    light.sophia_3:
+      min_mireds: 111
+      max_mireds: 400
+      effect_list:
+      - effect_colorloop
+      - effect_pulse
+      - effect_stop
+      supported_color_modes:
+      - color_temp
+      - hs
+      friendly_name: Sophia 3
+      supported_features: 55
+      state: 'off'
+    switch.ambilight:
+      friendly_name: Ambilight
+      state: 'off'
+    switch.air_purifier:
+      friendly_name: Stair Lights
+      state: 'off'
+    switch.magicmirror:
+      friendly_name: MagicMirror
+      state: 'off'
+    switch.tree:
+      friendly_name: Tree
+      state: 'off'
+- id: '1625259619577'
+  name: Only Nightstands
+  entities:
+    light.back_living_room:
+      supported_color_modes:
+      - brightness
+      friendly_name: Back Living Room
+      supported_features: 1
+      state: 'off'
+    light.bathroom:
+      supported_color_modes:
+      - brightness
+      friendly_name: Bathroom
+      supported_features: 1
+      state: 'off'
+    light.closet:
+      supported_color_modes:
+      - brightness
+      friendly_name: Closet
+      supported_features: 1
+      state: 'off'
+    light.foyer_lights:
+      friendly_name: Foyer
+      state: 'off'
+    light.garage:
+      supported_color_modes:
+      - brightness
+      friendly_name: Garage
+      supported_features: 1
+      state: 'off'
+    light.kitchen_lights:
+      friendly_name: Kitchen
+      state: 'off'
+    light.living_room_1:
+      min_mireds: 111
+      max_mireds: 400
+      effect_list:
+      - effect_colorloop
+      - effect_pulse
+      - effect_stop
+      supported_color_modes:
+      - color_temp
+      - hs
+      friendly_name: Living Room 1
+      supported_features: 55
+      state: 'off'
+    light.living_room_2:
+      min_mireds: 111
+      max_mireds: 400
+      effect_list:
+      - effect_colorloop
+      - effect_pulse
+      - effect_stop
+      supported_color_modes:
+      - color_temp
+      - hs
+      friendly_name: Living Room 2
+      supported_features: 55
+      state: 'off'
+    light.master_1:
+      min_mireds: 111
+      max_mireds: 400
+      effect_list:
+      - effect_colorloop
+      - effect_pulse
+      - effect_stop
+      supported_color_modes:
+      - color_temp
+      - hs
+      friendly_name: Master 1
+      supported_features: 55
+      state: 'off'
+    light.master_2:
+      min_mireds: 111
+      max_mireds: 400
+      effect_list:
+      - effect_colorloop
+      - effect_pulse
+      - effect_stop
+      supported_color_modes:
+      - color_temp
+      - hs
+      friendly_name: Master 2
+      supported_features: 55
+      state: 'off'
+    light.office_1:
+      min_mireds: 111
+      max_mireds: 400
+      effect_list:
+      - effect_colorloop
+      - effect_pulse
+      - effect_stop
+      supported_color_modes:
+      - color_temp
+      - hs
+      friendly_name: Office 1
+      supported_features: 55
+      state: 'off'
+    light.office_2:
+      min_mireds: 111
+      max_mireds: 400
+      effect_list:
+      - effect_colorloop
+      - effect_pulse
+      - effect_stop
+      supported_color_modes:
+      - color_temp
+      - hs
+      friendly_name: Office 2
+      supported_features: 55
+      state: 'off'
+    light.office_3:
+      min_mireds: 111
+      max_mireds: 400
+      effect_list:
+      - effect_colorloop
+      - effect_pulse
+      - effect_stop
+      supported_color_modes:
+      - color_temp
+      - hs
+      friendly_name: Office 3
+      supported_features: 55
+      state: 'off'
+    light.playroom_1:
+      min_mireds: 111
+      max_mireds: 400
+      effect_list:
+      - effect_colorloop
+      - effect_pulse
+      - effect_stop
+      supported_color_modes:
+      - color_temp
+      - hs
+      friendly_name: Playroom 1
+      supported_features: 55
+      state: 'off'
+    light.playroom_2:
+      min_mireds: 111
+      max_mireds: 400
+      effect_list:
+      - effect_colorloop
+      - effect_pulse
+      - effect_stop
+      supported_color_modes:
+      - color_temp
+      - hs
+      friendly_name: Playroom 2
+      supported_features: 55
+      state: 'off'
+    light.playroom_3:
+      min_mireds: 111
+      max_mireds: 400
+      effect_list:
+      - effect_colorloop
+      - effect_pulse
+      - effect_stop
+      supported_color_modes:
+      - color_temp
+      - hs
+      friendly_name: Playroom 3
+      supported_features: 55
+      state: 'off'
+    light.sophia_1:
+      min_mireds: 111
+      max_mireds: 400
+      effect_list:
+      - effect_colorloop
+      - effect_pulse
+      - effect_stop
+      supported_color_modes:
+      - color_temp
+      - hs
+      friendly_name: Sophia 1
+      supported_features: 55
+      state: 'off'
+    light.sophia_2:
+      min_mireds: 111
+      max_mireds: 400
+      effect_list:
+      - effect_colorloop
+      - effect_pulse
+      - effect_stop
+      supported_color_modes:
+      - color_temp
+      - hs
+      friendly_name: Sophia 2
+      supported_features: 55
+      state: 'off'
+    light.sophia_3:
+      min_mireds: 111
+      max_mireds: 400
+      effect_list:
+      - effect_colorloop
+      - effect_pulse
+      - effect_stop
+      supported_color_modes:
+      - color_temp
+      - hs
+      friendly_name: Sophia 3
+      supported_features: 55
+      state: 'off'
+    switch.ambilight:
+      friendly_name: Ambilight
+      state: 'off'
+    switch.air_purifier:
+      friendly_name: Stair Lights
+      state: 'off'
+    switch.magicmirror:
+      friendly_name: MagicMirror
+      state: 'off'
+    switch.tree:
+      friendly_name: Tree
+      state: 'off'

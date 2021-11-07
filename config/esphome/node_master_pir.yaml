@@ -1,0 +1,39 @@
+esphome:
+  name: node_master_pir
+  platform: ESP8266
+  board: nodemcuv2
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  fast_connect: true
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Master PIR Fallback Hotspot"
+    password: !secret fallback_password
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+
+ota:
+
+binary_sensor:
+  - platform: gpio
+    name: "Master Motion"
+    pin:
+      number: D6
+      inverted: False
+      mode: INPUT
+
+sensor:
+  - platform: dht
+    model: DHT22
+    pin: D7
+    temperature:
+      name: "Master Temperature"
+    humidity:
+      name: "Master Humidity"
+    update_interval: 60s

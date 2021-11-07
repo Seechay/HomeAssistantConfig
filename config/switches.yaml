@@ -1,0 +1,35 @@
+- platform: template
+  switches:
+    printrbot:
+      friendly_name: printrbot
+      value_template: "{{ is_state('switch.printrbot_power', 'on') }}"
+      turn_on:
+        service: switch.turn_on
+        data:
+          entity_id: switch.printrbot_power
+      turn_off:
+        service: script.printrbot_safe_power_down
+- platform: mqtt
+  name: Printrbot Controls
+  optimistic: true
+  command_topic: "printrbot_controls"
+
+- platform: template
+  switches:
+    alarm_chime:
+      friendly_name: Chime
+      value_template: "{{ is_state_attr('alarm_control_panel.alarm_panel', 'chime', true) }}"
+      turn_on:
+        service: alarmdecoder.alarm_toggle_chime
+        data:
+          code: !secret alarm_code
+      turn_off:
+        service: alarmdecoder.alarm_toggle_chime
+        data:
+          code: !secret alarm_code
+      icon_template: >-
+        {% if is_state_attr('alarm_control_panel.alarm_panel', 'chime', true) %}
+          mdi:bell-ring
+        {% else %}
+          mdi:bell-off
+        {% endif %}

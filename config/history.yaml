@@ -1,0 +1,7 @@
+exclude:
+  domains:
+    - automation
+    - group
+  entities:
+  - camera.neato_cleaning_map
+  - sensor.last_boot

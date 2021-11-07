@@ -1,0 +1,98 @@
+# dwains_dashboard
+## More page add-on: Tesla
+## Created by Seechay
+## Version: 1.0.0
+- type: custom:dwains-flexbox-card
+  items_classes: 'col-xs-12 col-sm-6 col-sm-6 col-md-3'
+  cards:
+    - type: vertical-stack
+      cards:
+      - type: picture
+        image: /local/images/other/model3.png
+      - type: map
+        aspect_ratio: 16:9
+        default_zoom: 13
+        entities:
+          - device_tracker.tesla_model_3_location_tracker
+    - type: vertical-stack
+      cards:
+        - type: entities
+          title: Battery & Range
+          entities:
+            - entity: sensor.tesla_model_3_battery_sensor
+              name: Battery
+            - entity: binary_sensor.tesla_model_3_charger_sensor
+              name: Charger
+            - entity: sensor.tesla_model_3_charging_rate_sensor
+              name: Charging Rate
+        - type: 'custom:bar-card'
+          width: 70%
+          entities:
+            - name: Battery
+              entity: sensor.tesla_model_3_battery_sensor
+            - name: Range
+              entity: sensor.tesla_model_3_range_sensor
+              max: 200
+          positions:
+            icon: 'off'
+            indicator: inside
+            name: outside
+        - type: custom:mini-graph-card
+          name: Battery & Range
+          points_per_hour: 2
+          icon: 'mdi:battery'
+          entities:
+            - entity: sensor.tesla_model_3_battery_sensor
+              name: Battery
+            - entity: sensor.tesla_model_3_range_sensor
+              name: Range
+    - type: vertical-stack
+      cards:
+        #- type: 'custom:thermostat-card' 
+        - type: 'custom:simple-thermostat'
+          entity: climate.tesla_model_3_hvac_climate_system
+          name: Climate
+          #title: Climate
+          control:
+            hvac:
+                'heat_cool':
+                  name: "Heat/Cool"
+            preset:
+              'normal': 
+                name: 'Normal'
+              'defrost':
+                name: 'Defrost'
+        - type: custom:mini-graph-card
+          name: Temperature
+          points_per_hour: 2
+          icon: 'mdi:battery'
+          entities:
+            - entity: sensor.tesla_model_3_temperature_sensor_inside
+              name: Inside
+            - entity: sensor.tesla_model_3_temperature_sensor_outside
+              name: Outside
+          line_color: blue
+    - type: vertical-stack
+      cards:
+      - type: entities
+        title: Locks
+        entities:
+          - entity: lock.tesla_model_3_door_lock
+            name: Doors
+          - entity: lock.tesla_model_3_charger_door_lock
+            name: Charger Door
+          - entity: lock.tesla_model_3_frunk_lock
+            name: Frunk
+          - entity: lock.tesla_model_3_trunk_lock
+            name: Trunk
+      - type: entities
+        title: Switches
+        entities:
+          - entity: switch.tesla_model_3_charger_switch
+            name: Charger
+          - entity: switch.tesla_model_3_maxrange_switch
+            name: Max Range
+          - entity: switch.tesla_model_3_sentry_mode_switch
+            name: Sentry Mode
+          - entity: switch.tesla_model_3_update_switch
+            name: Data Polling

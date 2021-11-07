@@ -1,0 +1,25 @@
+# https://dwainscheeren.github.io/dwains-lovelace-dashboard/configuration/house_information.html
+
+house_information:
+  favorites:
+    - entity: climate.downstairs
+    - entity: climate.upstairs
+    - entity: camera.sophia
+    - entity: script.pihole_disable
+  #     icon_on: mdi:bell
+  #     icon_off: mdi:bell-outline
+  #   - entity: binary_sensor.hallway_door_contact
+  #     icon_on: mdi:door-open
+  #     icon_off: mdi:door-closed
+  #
+  addons:
+    - name: Calendar #This is an example addon see: https://github.com/dwainscheeren/dwains-dashboard-addons/tree/for-1.0/house_information/calendar
+      icon: mdi:calendar
+      path: 'dwains-dashboard/addons/house_information/calendar/page.yaml'
+      data:
+        calendars:
+          - calendar.agulbranson0321_gmail_com
+          - calendar.cj_mandy
+          - calendar.family
+          - calendar.lexi_s_work_schedule
+          - calendar.meal_plan

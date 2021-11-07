@@ -1,0 +1,27 @@
+# dwains_dashboard
+## Created by Seechay
+## More-page add-on: Grocy Chores
+## Version: 1.0.0
+
+- type: custom:dwains-flexbox-card
+  items_classes: 'col-xs-12 col-sm-6 col-sm-6 col-md-3'
+  cards:
+{% for user in (data | fromjson)['users'] %}
+      - type: horizontal-stack
+        cards:
+          - type: 'custom:grocy-chores-card'
+            filter_user: {{ user.id }}
+            user_id: {{ user.id }}
+            entity:
+              - sensor.grocy_chores
+            title: "{{ user.name }}'s Chores"
+            styles:
+              card:
+                - text-transform: uppercase
+                - color: 'var(--dwains-theme-accent)'
+                - font-size: 125%
+                - border-radius: 0%
+                - font-weight: 100
+                - letter-spacing: 10px
+
+{% endfor -%}

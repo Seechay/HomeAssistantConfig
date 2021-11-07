@@ -1,0 +1,37 @@
+# dwains_dashboard
+## Room add-on custom button: Vacuum
+## Created by Jeroen Klompen
+## Version: 1.1.1
+
+type: custom:button-card
+entity: {{ (data | fromjson)['vacuum'] }}
+template: rooms_child
+name: {{ name }}
+icon: {{ icon|default('mdi:puzzle') }}
+tap_action:
+  action: navigate
+  navigation_path: {{ navigation_path }}
+hold_action:
+    action: more-info
+label: >
+  [[[
+    if(entity.state == 'cleaning') {
+      return hass.localize('component.vacuum.state._.cleaning');
+    } else if (entity.state == 'docked') {
+      return hass.localize('component.vacuum.state._.docked');
+    } else if (entity.state == 'error') {
+      return hass.localize('component.vacuum.state._.error');
+    } else if (entity.state == 'idle') {
+      return hass.localize('component.vacuum.state._.idle');
+    } else if (entity.state == 'off') {
+      return hass.localize('component.vacuum.state._.off');
+    } else if (entity.state == 'on') {
+      return hass.localize('component.vacuum.state._.on');
+    } else if (entity.state == 'paused') {
+      return hass.localize('component.vacuum.state._.paused');
+    } else if (entity.state == 'returning') {
+      return hass.localize('component.vacuum.state._.returning');
+    } else {
+      return 'Entity error!';
+    }
+  ]]]

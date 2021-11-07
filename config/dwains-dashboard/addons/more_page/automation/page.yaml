@@ -1,0 +1,48 @@
+# dwains_dashboard
+## Originally created by LRvdLinden, modified by Seechay
+## More-page add-on: Automations
+## Version: 1.0.3
+## https://github.com/LRvdLinden
+- type: custom:dwains-flexbox-card
+  items_classes: 'col-xs-12'
+  cards: 
+    - type: custom:dwains-flexbox-card
+      items_classes: 'col-xs-12 col-sm-6 col-sm-6'
+      cards:
+        - type: custom:dwains-flexbox-card
+          items_classes: 'col-xs-12 col-md-12'
+          cards:
+            - type: markdown
+              content: >
+                ![Image](https://www.iotworldtoday.com/files/2019/11/GettyImages-1097894826-724x432.jpg)
+        - type: custom:dwains-flexbox-card
+          items_classes: 'col-xs-12 col-md-12'
+          cards:
+            - type: entities
+              entities:
+{% for group in (data | fromjson)['automation_groups'] %}
+                - type: custom:fold-entity-row
+                  head: {{ group }}
+{% endfor %}
+{% for automation in (data | fromjson)['automations'] %}
+                - {{ automation }}
+{% endfor %} 
+            - type: 'custom:scheduler-card'
+              include:
+                - alarm_control_panel
+                - climate
+                - group
+                - light
+                - media_player
+                - person
+                - scene
+                - switch
+              title: Scheduler
+            - type: 'custom:search-card'
+              entity_id:
+                '1': null
+              max_results: 15
+              name: 'Toggle {1}'
+              service: homeassistant.toggle
+              service_data: null
+              icon: 'mdi:database-search'

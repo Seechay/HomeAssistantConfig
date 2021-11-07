@@ -1,0 +1,45 @@
+# Generic ignores
+*.log
+*.log.*
+*.db
+*.db-shm
+*.db-wal
+*.pyc
+._*
+__pycache__
+
+# Directory (contents) ignores
+config/.certs
+config/.cloud
+config/.storage
+config/custom_components/*
+config/deps
+config/image
+config/node-red
+config/neighbours
+config/tts
+config/www/community/*
+[Ii]mages/
+# Allow things I modified
+!config/custom_components/dwains_dashboard
+!config/www/community/lovelace-digital-clock-mod
+
+# Specific file ignores
+config/.ps4-games.json
+config/.google.token
+config/.uuid
+config/google_calendars.yaml
+config/harmony_harmony_hub.conf
+config/ip_bans.yaml
+config/known_devices.yaml
+config/secrets.yaml
+
+# ESPHome ignores
+config/esphome/.*/
+config/esphome/.esphome/
+config/esphome/**/.pioenvs/
+config/esphome/**/.piolibdeps/
+config/esphome/**/lib/
+config/esphome/**/src/
+config/esphome/**/platformio.ini
+config/esphome/secrets.yaml

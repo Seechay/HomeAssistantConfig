@@ -1,0 +1,34 @@
+guest_mode:
+    name: Guest Mode
+cj_override:
+    name: CJ Home Override
+lexi_override:
+    name: Lexi Home Override
+party_mode:
+    name: Party Mode
+living_room_motion:
+    name: Living Room Motion
+master_motion:
+    name: Master Bedroom Motion
+kitchen_motion:
+    name: Kitchen Motion
+office_motion:
+    name: Office Motion
+bathroom_motion:
+    name: Master Bathroom Motion
+closet_motion:
+    name: Master Closet Motion
+sophias_motion:
+    name: Sophia's Room Motion
+playroom_motion:
+    name: Playroom Motion
+foyer_motion:
+    name: Foyer Motion
+good_night_trigger:
+    name: Good Night Trigger
+good_morning_trigger:
+    name: Good Morning Trigger
+bathroom_bed_trigger:
+    name: Bathroom Bed Sensor Trigger
+nightstands_bed_trigger:
+    name: Night Stands Bed Sensor Trigger

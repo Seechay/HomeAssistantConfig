@@ -1,0 +1,283 @@
+# https://dwainscheeren.github.io/dwains-lovelace-dashboard/configuration/rooms.html
+
+rooms:
+  - name: Master Bedroom
+    icon: mdi:bed
+    light: group.master_lights
+    temperature: sensor.master_bedroom_aqara_temperature
+    humidity: sensor.master_bedroom_aqara_humidity
+    pressure: sensor.master_bedroom_aqara_pressure
+    motion: binary_sensor.master_bedroom_aqara_motion
+    vacuum:
+      entity: vacuum.neato
+      camera: camera.neato_cleaning_map
+    media_player: group.master_media_players
+    page_entities:
+      entities:
+        - entity: binary_sensor.lexi_in_bed
+        - entity: binary_sensor.cj_in_bed
+        - entity: input_boolean.master_motion
+        - entity: input_boolean.good_night_trigger
+        - entity: input_boolean.good_morning_trigger
+        - entity: input_boolean.bathroom_bed_trigger
+        - entity: input_boolean.nightstands_bed_trigger
+    additional_badges:
+      - entity: binary_sensor.master_bed_occupied
+        icon: mdi:bed
+  - name: Master Bathroom
+    icon: mdi:toilet
+    light: light.bathroom
+    temperature: sensor.master_bathroom_aqara_temperature
+    humidity: sensor.master_bathroom_aqara_humidity
+    pressure: sensor.master_bathroom_aqara_pressure
+    motion: binary_sensor.master_bathroom_aqara_motion
+    door: binary_sensor.shower_aqara_door
+    media_player: media_player.echo_bathroom
+    page_entities:
+      entities:
+        - entity: input_boolean.bathroom_motion
+  - name: Master Closet
+    icon: mdi:hanger
+    light: light.closet
+    temperature: sensor.closet_aqara_temperature
+    humidity: sensor.closet_aqara_humidity
+    pressure: sensor.closet_aqara_pressure
+    motion: binary_sensor.closet_aqara_motion
+    page_entities:
+      entities:
+        - entity: input_boolean.closet_motion
+  - name: Playroom
+    icon: mdi:toy-brick
+    light: light.playroom_lights
+    temperature: sensor.playroom_aqara_temperature
+    climate: climate.upstairs
+    humidity: sensor.playroom_aqara_humidity
+    pressure: sensor.playroom_aqara_pressure
+    motion: binary_sensor.playroom_aqara_motion
+    media_player: group.playroom_media_players
+    safety: sensor.indoor_air_health
+    device: switch.tree
+    page_entities:
+      entities:
+        - entity: input_boolean.playroom_motion
+        - entity: sensor.pm_1_0_um
+        - entity: sensor.pm_2_5_um
+        - entity: sensor.pm_10_0_um
+        - entity: sensor.pm_2_5_aqi
+  - name: Sophia's Room
+    icon: mdi:bed
+    light: light.sophia_s_room_lights
+    temperature: sensor.sophias_room_aqara_temperature
+    humidity: sensor.sophias_room_aqara_humidity
+    pressure: sensor.sophias_room_aqara_pressure
+    motion: binary_sensor.sophias_room_aqara_motion
+    door: binary_sensor.sophias_room_aqara_door
+    media_player: media_player.echo_dot_sophia
+    page_entities:
+      entities:
+        - entity: input_boolean.sophias_motion
+    addons:
+      - name: Camera
+        path: 'dwains-dashboard/addons/rooms/sophias_room/camera/page.yaml'
+        button_path: 'dwains-dashboard/addons/rooms/sophias_room/camera/button.yaml'
+        data:
+          entity: camera.sophia
+  - name: Office
+    icon: mdi:chair-rolling
+    light: light.office_lights
+    temperature: sensor.office_aqara_temperature
+    humidity: sensor.office_aqara_humidity
+    pressure: sensor.office_aqara_pressure
+    motion: group.office_motion
+    media_player: media_player.echo_dot_office
+    page_entities:
+      entities:
+        - entity: input_boolean.office_motion
+    addons:
+      - name: Printer
+        icon: mdi:printer
+        path: 'dwains-dashboard/addons/rooms/office/printer/page.yaml'
+        button_path: 'dwains-dashboard/addons/rooms/office/printer/button.yaml'
+        data:
+          printer:
+            - entity: sensor.cnmf632c_634c
+              name: State
+          cartridges:
+            - entity: sensor.cnmf632c_634c_canon_cartridge_045_black_toner
+              name: Black
+              color: Black
+            - entity: sensor.cnmf632c_634c_canon_cartridge_045_cyan_toner
+              name: Cyan
+              color: MediumTurquoise
+            - entity: sensor.cnmf632c_634c_canon_cartridge_045_magenta_to
+              name: Magenta
+              color: MediumOrchid
+            - entity: sensor.cnmf632c_634c_canon_cartridge_045_yellow_ton
+              name: Yellow
+              color: Gold
+  - name: Foyer
+    icon: mdi:floor-plan
+    light: light.foyer_lights
+    temperature: sensor.foyer_aqara_temperature
+    humidity: sensor.foyer_aqara_humidity
+    pressure: sensor.foyer_aqara_pressure
+    motion: binary_sensor.foyer_motion
+    door: binary_sensor.front_and_garage_doors
+    device: switch.magicmirror
+    media_player: media_player.echo_flex_hallway
+    page_entities:
+      entities:
+        - entity: input_boolean.foyer_motion
+    addons:
+      - name: Dwayne
+        icon: mdi:robot-vacuum
+        path: 'dwains-dashboard/addons/rooms/foyer/vacuum/page.yaml'
+        button_path: 'dwains-dashboard/addons/rooms/foyer/vacuum/button.yaml'
+        data:
+          vacuum: vacuum.robot
+          platform: valetudo
+          map: camera.map_data
+          rooms:
+            - room: Living Room
+              zone: clean_living_room
+              icon: fal:couch
+            - room: Kitchen
+              zone: clean_kitchen
+              icon: fal:refrigerator
+            - room: Dining Room
+              zone: clean_dining_room
+              icon: fal:coffee
+            - room: Hallway
+              zone: clean_hall
+              icon: fal:key-skeleton
+            - room: Foyer
+              zone: clean_foyer
+              icon: fal:warehouse
+            - room: Mop
+              zone: clean_mop
+              icon: mdi:water
+          controls:
+            - name: Start
+              service: vacuum.start
+              icon: mdi:play
+            - name: Pause
+              service: vacuum.pause
+              icon: mdi:pause
+            - name: Stop
+              service: vacuum.stop
+              icon: mdi:stop
+            - name: Return
+              service: vacuum.return_to_base
+              icon: mdi:ev-station
+            - name: Locate
+              service: vacuum.locate
+              icon: mdi:map-marker-circle
+          sensors:
+            - name: Main brush
+              sensor: sensor.main_brush
+              icon: mdi:broom
+            - name: Side brush
+              sensor: sensor.right_brush
+              icon: mdi:broom
+            - name: Filter
+              sensor: sensor.main_filter
+              icon: mdi:broom
+            - name: Sensor
+              sensor: sensor.sensor_cleaning
+              icon: mdi:air-filter
+  - name: Living Room
+    icon: mdi:sofa
+    light: group.living_room_lights
+    temperature: sensor.living_room_aqara_temperature
+    climate: climate.downstairs
+    humidity: sensor.living_room_aqara_humidity
+    pressure: sensor.living_room_aqara_pressure
+    motion: binary_sensor.living_room_motion
+    device: switch.ambilight
+    media_player: group.living_room_media_players
+    page_entities:
+      entities:
+        - entity: input_boolean.living_room_motion
+  - name: Kitchen
+    icon: mdi:food-fork-drink
+    light: light.kitchen_lights
+    temperature: sensor.kitchen_aqara_temperature
+    humidity: sensor.kitchen_aqara_humidity
+    pressure: sensor.kitchen_aqara_pressure
+    motion: binary_sensor.kitchen_aqara_motion
+    media_player: media_player.echo_show_kitchen
+    page_entities:
+      entities:
+        - entity: input_boolean.kitchen_motion
+  - name: Guest Bedroom
+    icon: mdi:bed
+    temperature: sensor.guest_aqara_temperature
+    humidity: sensor.guest_aqara_humidity
+    pressure: sensor.guest_aqara_pressure
+  - name: Garage
+    icon: mdi:garage
+    light: light.garage
+    temperature: sensor.garage_aqara_temperature
+    humidity: sensor.garage_aqara_humidity
+    pressure: sensor.garage_aqara_pressure
+    cover: cover.garage_door
+    device: switch.printrbot
+    addons:
+      - name: Tesla Model 3
+        icon: mdi:car-electric-outline
+        path: 'dwains-dashboard/addons/rooms/garage/tesla/page.yaml'
+        button_path: 'dwains-dashboard/addons/rooms/garage/tesla/button.yaml'
+        data:
+          sensors:
+            - entity: binary_sensor.tesla_model_3_online_sensor
+              friendly: False
+            - entity: binary_sensor.tesla_model_3_parking_brake_sensor
+              friendly: True
+            - entity: climate.tesla_model_3_hvac_climate_system
+              friendly: False
+            - entity: device_tracker.tesla_model_3_location_tracker
+              friendly: False
+            - entity: sensor.tesla_model_3_mileage_sensor
+              friendly: False
+          lock_sensors:
+            - entity: lock.tesla_model_3_charger_door_lock
+              friendly_name: Charger door
+            - entity: lock.tesla_model_3_door_lock
+              friendly_name: Doors
+            - entity: lock.tesla_model_3_frunk_lock
+              friendly_name: Frunk
+            - entity: lock.tesla_model_3_trunk_lock
+              friendly_name: Trunk
+          battery_sensors:
+            - entity: sensor.tesla_model_3_battery_degradation
+              friendly_name: Battery Degradation
+            - entity: sensor.tesla_model_3_battery_sensor
+              friendly_name: Battery
+            - entity: binary_sensor.tesla_model_3_charger_sensor
+              friendly_name: Charging
+            - entity: sensor.tesla_model_3_extrapolated_range
+              friendly_name: Extrapolated Range
+            - entity: sensor.tesla_model_3_range_sensor
+              friendly_name: Range
+          temp_sensors:
+            - entity: sensor.tesla_model_3_temperature_sensor_inside
+              friendly_name: Inside
+            - entity: sensor.tesla_model_3_temperature_sensor_outside
+              friendly_name: Outside
+
+  - name: Outside
+    icon: mdi:tree
+    light: light.outside
+    temperature: sensor.outside_aqara_temperature
+    humidity: sensor.outside_aqara_humidity
+    pressure: sensor.outside_aqara_pressure
+    door: binary_sensor.back_door
+    addons:
+      - name: Front Door Tree
+        icon: fas:leaf
+        path: 'dwains-dashboard/addons/rooms/outside/plant/page.yaml'
+        button_path: 'dwains-dashboard/addons/rooms/outside/plant/button.yaml'
+        data:
+          plants:
+            - entity: plant.front_door_tree
+              species: portulacaria afra

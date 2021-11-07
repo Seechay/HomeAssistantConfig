@@ -1,0 +1,90 @@
+# dwains_dashboard
+## Originally created by LRvdLinden, modified by Seechay
+## More-page add-on: Climate Control
+## Version: 1.0.3
+## https://github.com/LRvdLinden
+
+- type: custom:dwains-flexbox-card
+  items_classes: 'col-xs-12 col-sm-6 col-sm-6 col-md-3'
+  cards:
+{% for sensor in (data | fromjson)['sensors'] %}
+      - type: vertical-stack
+        cards:
+          - type: 'custom:button-card'
+            name: {{ sensor.card_name }}
+            styles:
+              card:
+                - text-transform: uppercase
+                - color: 'var(--dwains-theme-accent)'
+                - font-size: 125%
+                - border-radius: 0%
+                - font-weight: 100
+                - letter-spacing: 10px
+          - type: horizontal-stack
+            cards:
+              - entities:
+                  - entity: {{ sensor.graph_entity }}
+                    color: 'var(--dwains-theme-accent)'
+                    show_fill: true
+                font_size: 80
+                hours_to_show: 24
+                line_width: 2
+                hour24: true
+                points_per_hour: 2
+                decimals: 0
+                show:
+                  animate: true
+                  icon: false
+                  labels: false
+                  legend: false
+                  name: false
+                  graph: line
+                  extrema: true
+                  average: true
+                theme: ios-dark-mode-blue-red
+                type: 'custom:mini-graph-card'
+              - aspect_ratio: 1/1
+                color: 'rgb(41, 158, 194)'
+                entity: {{ sensor.button_entity }}
+                icon: {{ sensor.button_icon }}
+                name: {{ sensor.card_name }}
+                show_state: true
+                size: 30%
+                state:
+                  - color: 'var(-- state-icon-active-color)'
+                    value: 'off'
+                  - color: 'var(--state-icon-color)'
+                    value: 'on'
+                  - color: 'var(--state-icon-unavailable-color)'
+                    value: 'unavailable'
+                styles:
+                  name:
+                    - text-transform: uppercase
+                    - font-size: 10px
+                  state:
+                    - text-transform: uppercase
+                    - font-size: 15px
+                    - font: bold
+                type: 'custom:button-card'
+          {% if sensor.info is defined %}
+          - type: entities
+            entities:
+            {% for info in sensor.info %}
+              - entity: {{ info.entity }}
+                name: {{ info.name }}
+                secondary_info: last-updated
+            {% endfor -%}
+            {% if sensor.more_info is defined %}
+              - type: custom:fold-entity-row
+                head:
+                  type: section
+                  label: More Information
+                entities:
+                {% for more in sensor.more_info %}
+                  - entity: {{ more.entity }}
+                    name: {{ more.name }}
+                    secondary_info: last-updated
+                {% endfor -%}
+            {% endif %}
+          {% endif %}
+{% endfor -%}

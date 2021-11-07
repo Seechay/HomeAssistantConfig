@@ -1,0 +1,138 @@
+- platform: ping
+  name: Cloudflare DNS
+  host: 1.1.1.1
+  count: 5
+  scan_interval: 600
+
+- platform: ping
+  name: Google DNS
+  host: 8.8.8.8
+  count: 5
+  scan_interval: 800
+
+# Sensors for presence detection
+- platform: template
+  sensors:
+    playroom_occupied:
+      friendly_name: 'Playroom Occupied'
+      value_template: "{{ is_state('light.playroom_lights', 'on') }}"
+    sophias_room_occupied:
+      friendly_name: "Sophia's Room Occupied"
+      value_template: "{{ is_state('light.sophia_s_room_lights', 'on') }}"
+    foyer_occupied:
+      friendly_name: 'Foyer Occupied'
+      value_template: "{{ is_state('light.foyer_lights', 'on') }}"
+    kitchen_occupied:
+      friendly_name: 'Kitchen Occupied'
+      value_template: "{{ is_state('light.kitchen_lights', 'on') }}"
+    living_occupied:
+      friendly_name: 'Living Room Occupied'
+      value_template: >-
+        {% if is_state('light.living_room_lights', 'on') %}
+          True
+        {% elif states('sensor.cyberpower2_load')|float > 5 %}
+          True
+        {% else %}
+          False
+        {% endif %}
+    office_occupied:
+      friendly_name: 'Office Occupied'
+      value_template: >-
+        {% if is_state('light.office_lights', 'on') %}
+          True
+        {% elif is_state('device_tracker.seechaylaptop_lan', 'home') %}
+          True
+        {% elif is_state('device_tracker.seechaydesktop_lan', 'home') %}
+          True
+        {% else %}
+          False
+        {% endif %}
+    master_occupied:
+      friendly_name: 'Master Occupied'
+      value_template: >-
+        {% if is_state('light.master_lights', 'on') %}
+          True
+        {% elif is_state('binary_sensor.master_bed_occupied', 'on') %}
+          True
+        {% else %}
+          False
+        {% endif %}
+    master_bath_occupied:
+      friendly_name: 'Master Bath Occupied'
+      value_template: >-
+        {% if is_state('light.bathroom', 'on') %}
+          True
+        {% else %}
+          False
+        {% endif %}
+- platform: template
+  sensors:
+    cj_in_bed:
+      friendly_name: "CJ In bed"
+      delay_off:
+        seconds: 2
+      delay_on:
+        seconds: 2
+      value_template: >-
+        {% if (states('sensor.filtered_cj_lowpass')) != 'unknown' %}
+        {{ (( states('input_number.cj_bed_sensor_latched_max') | float - states('sensor.filtered_cj_lowpass') | float ) > states('input_number.cj_bed_sensor_delta') | float ) and (is_state('person.chad_mandy', 'home')) }}
+        {% else %}
+          False
+        {%- endif %} 
+- platform: template
+  sensors:
+    lexi_in_bed:
+      friendly_name: "Lexi In bed"
+      value_template: >-
+        {% if (states('sensor.filtered_lexi_lowpass')) != 'unknown' %}
+          {{ (states('sensor.filtered_lexi_lowpass') | float < 0.2715) and (is_state('person.alexis_mandy', 'home')) }}
+        {% else %}
+          False
+        {%- endif %} 
+- platform: template
+  sensors:
+    master_bed_occupied:
+      friendly_name: "Master Bed Occupied"
+      value_template: >-
+        {{ is_state('binary_sensor.lexi_in_bed', 'on')
+            or is_state('binary_sensor.cj_in_bed', 'on') }}
+- platform: 'bayesian'
+  prior: 0.5
+  name: 'CJ'
+  device_class: 'presence'
+  probability_threshold: 0.9
+  observations:
+  - entity_id: 'person.chad_mandy'
+    prob_given_true: 0.9
+    prob_given_false: 0.1
+    platform: 'state'
+    to_state: 'home'
+  - entity_id: 'input_boolean.cj_override'
+    prob_given_true: 0.9
+    prob_given_false: 0.1
+    platform: 'state'
+    to_state: 'on'
+- platform: 'bayesian'
+  prior: 0.5
+  name: 'Lexi'
+  device_class: 'presence'
+  probability_threshold: 0.9
+  observations:
+  - entity_id: 'person.alexis_mandy'
+    prob_given_true: 0.9
+    prob_given_false: 0.1
+    platform: 'state'
+    to_state: 'home'
+  - entity_id: 'input_boolean.lexi_override'
+    prob_given_true: 0.9
+    prob_given_false: 0.1
+    platform: 'state'
+    to_state: 'on'
+- platform: template
+  sensors:
+    home_occupied:
+      friendly_name: "Home Occupied"
+      device_class: 'presence'
+      value_template: >-
+        {{ is_state('binary_sensor.cj', 'on')
+        or is_state('binary_sensor.lexi', 'on')}}

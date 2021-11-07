@@ -1,0 +1,143 @@
+- alias: printrbot disable controls
+  trigger:
+  - platform: state
+    entity_id: switch.printrbot_controls
+    to: 'on'
+  action:
+  - delay: 00:02:00
+  - service: switch.turn_off
+    entity_id: switch.printrbot_controls
+  id: a4435400122d43e6aef7d8fc13feaf73
+- alias: Set theme at startup
+  trigger:
+    platform: homeassistant
+    event: start
+  action:
+    service: frontend.set_theme
+    data:
+      name: Dwains Dark Theme
+  id: ae874e026e8d44d787270e43e05d1eea
+- alias: Update OpenUV every 30 minutes during the daytime
+  trigger:
+    platform: time_pattern
+    minutes: /30
+  condition:
+    condition: and
+    conditions:
+    - condition: sun
+      after: sunrise
+    - condition: sun
+      before: sunset
+  action:
+    service: openuv.update_data
+  id: 8b90ad942bfd4cc1a2f833a19bc2fc7d
+- id: '1624751140694'
+  alias: Frigate Notification Playroom
+  description: ''
+  use_blueprint:
+    path: hunterjm/frigate_notification.yaml
+    input:
+      camera: frigate_playroom
+      notify_group: everyone
+      labels:
+      - person
+      base_url: !secret base_url
+- id: '1624751179568'
+  alias: Frigate Notification Entryway
+  description: ''
+  use_blueprint:
+    path: hunterjm/frigate_notification.yaml
+    input:
+      camera: frigate_entryway
+      notify_group: everyone
+      labels:
+      - person
+      base_url: !secret base_url
+- id: '1624751242630'
+  alias: Frigate Notification Livingroom
+  description: ''
+  use_blueprint:
+    path: hunterjm/frigate_notification.yaml
+    input:
+      camera: frigate_livingroom
+      notify_group: everyone
+      labels:
+      - person
+      base_url: !secret base_url
+- id: '1624758963079'
+  alias: Check config with update
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.updater
+    to: 'on'
+  condition: []
+  action:
+  - service: hassio.addon_start
+    data:
+      addon: core_check_config
+- id: '1625263950283'
+  alias: Vacation Lighting
+  description: ''
+  use_blueprint:
+    path: homeassistant/vacation_lighting.yaml
+    input:
+      vacation_mode_toggle: input_boolean.vacation_mode
+      replay_sensor_1: sensor.replay_back_living_room
+      light_target_1: light.back_living_room
+      replay_sensor_2: sensor.replay_bathroom
+      light_target_2: light.bathroom
+      replay_sensor_3: sensor.replay_foyer_lights
+      light_target_3: light.foyer_lights
+      replay_sensor_4: sensor.replay_kitchen_lights
+      light_target_4: light.kitchen_lights
+      replay_sensor_5: sensor.replay_living_room_lights
+      light_target_5: light.living_room_lights
+      replay_sensor_6: sensor.replay_master_lights
+      light_target_6: light.master_lights
+      replay_sensor_7: sensor.replay_nightstand_lights
+      light_target_7: light.nightstand_lights
+      replay_sensor_8: sensor.replay_office_lights
+      light_target_8: light.office_lights
+      replay_sensor_9: sensor.replay_playroom_lights
+      light_target_9: light.playroom_lights
+      replay_sensor_10: sensor.replay_sophia_s_room_lights
+      light_target_10: light.sophia_s_room_lights
+- id: '1627872973285'
+  alias: Frigate Notification Garage
+  description: ''
+  use_blueprint:
+    path: hunterjm/frigate_notification.yaml
+    input:
+      camera: frigate_garage
+      notify_group: everyone
+      base_url: !secret base_url
+      labels:
+      - person
+- id: '1629258268715'
+  alias: Dryer status
+  description: ''
+  use_blueprint:
+    path: sbyx/notify-or-do-something-when-an-appliance-like-a-dishwasher-or-washing-machine-finishes.yaml
+    input:
+      power_sensor: sensor.dryer_usage
+      starting_threshold: 60
+      finishing_hysteresis: 10
+      actions:
+      - service: input_boolean.turn_on
+        target:
+          entity_id: input_boolean.dryer_finished
+- id: '1629778663753'
+  alias: Washer status
+  description: ''
+  use_blueprint:
+    path: sbyx/notify-or-do-something-when-an-appliance-like-a-dishwasher-or-washing-machine-finishes.yaml
+    input:
+      power_sensor: sensor.tasmota_0656_energy_power
+      starting_threshold: 20
+      starting_hysteresis: 1
+      finishing_threshold: 6
+      actions:
+      - service: input_boolean.turn_on
+        target:
+          entity_id: input_boolean.washer_finished

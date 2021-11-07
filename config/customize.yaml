@@ -1,0 +1,133 @@
+sensor.hass_db_size:
+  icon: mdi:database
+sensor.spider_battery:
+  friendly_name: Battery
+sensor.spider_brightness:
+  friendly_name: Brightness
+sensor.spider_conductivity:
+  friendly_name: Conductivity
+sensor.spider_moisture:
+  friendly_name: Moisture
+sensor.spider_temperature:
+  friendly_name: Temperature
+sensor.cyberpower1_battery_runtime:
+  friendly_name: Battery Runtime
+sensor.cyberpower1_input_voltage:
+  friendly_name: Input Voltage
+sensor.cyberpower1_load:
+  friendly_name: Load
+sensor.cyberpower1_nominal_real_power:
+  friendly_name: Nominal Real Power
+sensor.cyberpower1_power_consumption:
+  friendly_name: Power Consumption
+sensor.cyberpower1_status:
+  friendly_name: Status
+sensor.apc_battery_runtime:
+  friendly_name: Battery Runtime
+sensor.apc_input_voltage:
+  friendly_name: Input Voltage
+sensor.apc_load:
+  friendly_name: Load
+sensor.apc_nominal_real_power:
+  friendly_name: Nominal Real Power
+sensor.apc_power_consumption:
+  friendly_name: Power Consumption
+sensor.apc_status:
+  friendly_name: Status
+sensor.apc_battery_runtime_2:
+  friendly_name: Battery Runtime
+sensor.apc_input_voltage_2:
+  friendly_name: Input Voltage
+sensor.apc_load_2:
+  friendly_name: Load
+sensor.apc_nominal_real_power_2:
+  friendly_name: Nominal Real Power
+sensor.apc_power_consumption_2:
+  friendly_name: Power Consumption
+sensor.apc_status_2:
+  friendly_name: Status
+sensor.cyberpower2_battery_runtime:
+  friendly_name: Battery Runtime
+sensor.cyberpower2_input_voltage:
+  friendly_name: Input Voltage
+sensor.cyberpower2_load:
+  friendly_name: Load
+sensor.cyberpower2_nominal_real_power:
+  friendly_name: Nominal Real Power
+sensor.cyberpower2_power_consumption:
+  friendly_name: Power Consumption
+sensor.cyberpower2_status:
+  friendly_name: Status
+sensor.apc_battery_charge:
+  friendly_name: Network UPS Battery
+  icon: mdi:battery
+sensor.cyberpower1_battery_charge:
+  friendly_name: Living Room UPS Battery
+  icon: mdi:battery
+sensor.cyberpower2_battery_charge:
+  friendly_name: Office UPS Battery
+  icon: mdi:battery
+sensor.neato_battery:
+  battery_alert_disabled: true
+sensor.battery_level_lexi_iphone:
+  battery_alert_disabled: true
+sensor.battery_level_cjs_phone:
+  battery_alert_disabled: true
+device_tracker.lex_s_iphone:
+  battery_sensor_creation_disabled: true
+device_tracker.cjs_phone:
+  battery_sensor_creation_disabled: true
+vacuum.neato:
+  battery_sensor_creation_disabled: true
+plant.spider_plant:
+  battery_sensor_creation_disabled: true
+binary_sensor.sophias_room_aqara_door:
+  device_class: door
+binary_sensor.shower_aqara_door:
+  device_class: door
+sensor.daily_energy_offpeak:
+  friendly_name: Offpeak
+sensor.daily_energy_peak:
+  friendly_name: Peak
+sensor.ac_energy:
+  friendly_name: AC
+sensor.air_fryer_energy:
+  friendly_name: Air Fryer
+sensor.always_on_energy:
+  friendly_name: Always On
+sensor.cj_desk_energy:
+  friendly_name: CJ Desk
+sensor.coffee_maker_energy:
+  friendly_name: Coffee Maker
+sensor.dishwasher_energy:
+  friendly_name: Dishwasher
+sensor.dryer_energy:
+  friendly_name: Dryer
+sensor.entertainment_center_energy:
+  friendly_name: Entertainment Center
+sensor.fridge_energy:
+  friendly_name: Fridge
+sensor.furnace_energy:
+  friendly_name: Furnace
+sensor.garage_door_energy:
+  friendly_name: Garage Door
+sensor.humidifier_energy:
+  friendly_name: Humidifier
+sensor.hvac_fan_energy:
+  friendly_name: HVAC Fan
+sensor.instant_pot_energy:
+  friendly_name: Instant Pot
+sensor.lexi_desk_energy:
+  friendly_name: Lexi Desk
+sensor.microwave_energy:
+  friendly_name: Microwave
+sensor.network_closet_energy:
+  friendly_name: Network Closet
+sensor.other_energy:
+  friendly_name: Other
+sensor.rice_cooker_energy:
+  friendly_name: Rice Cooker
+sensor.samsung_tv_energy:
+  friendly_name: Samsung TV
+switch.printrbot:
+  friendly_name: Printrbot
