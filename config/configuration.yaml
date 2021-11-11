@@ -158,7 +158,7 @@ notify:
     platform: group
     services:
       - service: mobile_app_cjs_phone
-      - service: mobile_app_lex_s_iphone
+      - service: mobile_app_lexis_phone
 
 lifx:
   light:
