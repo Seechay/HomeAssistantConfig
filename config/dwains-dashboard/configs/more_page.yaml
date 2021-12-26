@@ -364,19 +364,17 @@ more_page:
     path: 'dwains-dashboard/addons/more_page/alexa_sonos/page.yaml'
     data:
       speakers:
-        - entity: media_player.echo_master
+        - entity: media_player.echo_show_master
           name: Echo Master
         - entity: media_player.echo_bathroom
           name: Echo Bathroom
         - entity: media_player.echo_dot_playroom
           name: Echo Dot Playroom
-        - entity: media_player.echo_flex_playroom
-          name: Echo Flex Playroom
         - entity: media_player.echo_dot_office
           name: Echo Dot Office
-        - entity: media_player.echo_flex_hallway
-          name: Echo Flex Hallway
-        - entity: media_player.echo_dot_living_room
+        - entity: media_player.echo_dot_foyer
+          name: Echo Dot Foyer
+        - entity: media_player.echo_living_room
           name: Echo Dot Living Room
         - entity: media_player.echo_show_kitchen
           name: Echo Show Kitchen

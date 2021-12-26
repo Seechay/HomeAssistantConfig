@@ -12,6 +12,7 @@ rooms:
       entity: vacuum.neato
       camera: camera.neato_cleaning_map
     media_player: group.master_media_players
+    safety: group.master_safety_devices
     page_entities:
       entities:
         - entity: binary_sensor.lexi_in_bed
@@ -24,6 +25,8 @@ rooms:
     additional_badges:
       - entity: binary_sensor.master_bed_occupied
         icon: mdi:bed
+      - entity: input_boolean.dummy1
+        icon: mdi:dumbbell
   - name: Master Bathroom
     icon: mdi:toilet
     light: light.bathroom
@@ -73,6 +76,7 @@ rooms:
     motion: binary_sensor.sophias_room_aqara_motion
     door: binary_sensor.sophias_room_aqara_door
     media_player: media_player.echo_dot_sophia
+    safety: group.sophia_safety_devices
     page_entities:
       entities:
         - entity: input_boolean.sophias_motion
@@ -125,6 +129,7 @@ rooms:
     door: binary_sensor.front_and_garage_doors
     device: switch.magicmirror
     media_player: media_player.echo_flex_hallway
+    safety: group.downstairs_safety_devices
     page_entities:
       entities:
         - entity: input_boolean.foyer_motion

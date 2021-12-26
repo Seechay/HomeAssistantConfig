@@ -695,6 +695,7 @@
 - platform: statistics
   entity_id: sensor.filtered_cj_lowpass
   name: CJ Bed Sensor
+  state_characteristic: value_max
   precision: 4
   sampling_size: 3600
   max_age:

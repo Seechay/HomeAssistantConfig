@@ -15,6 +15,8 @@ homeassistant:
 default_config:
 frontend:
   themes: !include_dir_merge_named themes/
+  extra_module_url:
+  - /hacsfiles/lovelace-card-mod/card-mod.js
 
 sun:
 http:
@@ -213,53 +215,7 @@ browser_mod:
       name: downstairs-tablet
   disable:
     - all
-    
-# Need to remove these at some point and migrate to new format for iOS. 
-ios:
-  push:
-    categories:
-      - name: "Alarm Control iOS" 
-        identifier: 'alarm_notification_ios' 
-        actions: 
-          - identifier: 'ACKNOWLEDGE_ALARM'
-            title: 'No'
-          - identifier: 'SILENCE_ALARM'
-            title: 'Yes'
-            destructive: true
-      - name: "Alarm Arm Home iOS" 
-        identifier: 'arm_home_notification_ios' 
-        actions: 
-          - identifier: 'ARM_ALARM_HOME'
-            title: 'Arm Alarm'
-          - identifier: 'ACKNOWLEDGE_ALARM'
-            title: 'Do Not Arm Alarm'
-            destructive: true
-      - name: "Alarm Arm Away iOS" 
-        identifier: 'arm_away_notification_ios' 
-        actions: 
-          - identifier: 'ARM_ALARM_AWAY'
-            title: 'Arm Alarm'
-          - identifier: 'ACKNOWLEDGE_ALARM'
-            title: 'Do Not Arm Alarm'
-            destructive: true
-      - name: "Vacuum Prompt iOS"
-        identifier: 'vacuum_prompt_ios' 
-        actions: 
-          - identifier: 'CLEAN_HOUSE'
-            title: 'Clean'
-          - identifier: 'DONT_CLEAN_HOUSE'
-            title: 'Do not clean'
-            destructive: true
-      - name: "Vacuum Selection iOS"
-        identifier: 'vacuum_select_ios' 
-        actions: 
-          - identifier: 'VACUUM_UPSTAIRS'
-            title: 'Upstairs'
-          - identifier: 'VACUUM_DOWNSTAIRS'
-            title: 'Downstairs'
-          - identifier: 'VACUUM_BOTH'
-            title: 'Both'
-            
+
 octoprint:
   host: 192.168.2.25
   api_key: !secret octoprint_api
