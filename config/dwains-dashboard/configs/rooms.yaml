@@ -139,9 +139,9 @@ rooms:
         path: 'dwains-dashboard/addons/rooms/foyer/vacuum/page.yaml'
         button_path: 'dwains-dashboard/addons/rooms/foyer/vacuum/button.yaml'
         data:
-          vacuum: vacuum.robot
+          vacuum: vacuum.valetudo_dwayne
           platform: valetudo
-          map: camera.map_data
+          map: camera.valetudo_dwayne_map_data
           rooms:
             - room: Living Room
               zone: clean_living_room
@@ -152,9 +152,6 @@ rooms:
             - room: Dining Room
               zone: clean_dining_room
               icon: fal:coffee
-            - room: Hallway
-              zone: clean_hall
-              icon: fal:key-skeleton
             - room: Foyer
               zone: clean_foyer
               icon: fal:warehouse
@@ -179,16 +176,16 @@ rooms:
               icon: mdi:map-marker-circle
           sensors:
             - name: Main brush
-              sensor: sensor.main_brush
+              sensor: sensor.valetudo_dwayne_main_brush
               icon: mdi:broom
             - name: Side brush
-              sensor: sensor.right_brush
+              sensor: sensor.valetudo_dwayne_right_brush
               icon: mdi:broom
             - name: Filter
-              sensor: sensor.main_filter
+              sensor: sensor.valetudo_dwayne_main_filter
               icon: mdi:broom
             - name: Sensor
-              sensor: sensor.sensor_cleaning
+              sensor: sensor.valetudo_dwayne_sensor_cleaning
               icon: mdi:air-filter
   - name: Living Room
     icon: mdi:sofa

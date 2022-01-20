@@ -17,8 +17,8 @@
           items_classes: 'col-sm-12'
           cards:
             - type: 'custom:valetudo-map-card'
-              entity: camera.map_data
-              vacuum_entity: vacuum.robot
+              entity: camera.valetudo_dwayne_map_data
+              vacuum: valetudo_dwayne
               rotate: 0
               crop:
                 top: 0

@@ -122,7 +122,7 @@
       friendly_name: Neato Last Ran
     dwayne_last_ran:
       value_template: >-
-        {{ (states.vacuum.robot.last_changed | as_timestamp) | timestamp_custom('%m/%d - %I:%M %p')  }}
+        {{ (states.vacuum.valetudo_dwayne.last_changed | as_timestamp) | timestamp_custom('%m/%d - %I:%M %p')  }}
       friendly_name: Dwayne Last Ran
 
 - platform: template
@@ -772,13 +772,13 @@
   multiply_factor: 6
   fixed:
     power: 11
-  standby_usage: 0.5
+  standby_power: 0.5
 - platform: powercalc
   entity_id: light.foyer_lights
   multiply_factor: 2
   fixed:
     power: 11
-  standby_usage: 0.5
+  standby_power: 0.5
 - platform: powercalc
   entity_id: input_select.office_fan
   fixed:

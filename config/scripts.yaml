@@ -157,56 +157,49 @@ clean_kitchen:
   sequence:
   - service: mqtt.publish
     data:
-      topic: valetudo/robot/ZoneCleaningCapability/start/set
-      payload: '[ "d3a7cdd4-06b5-491f-adfa-2bfa26d0a862" ]'
+      topic: valetudo/Dwayne/ZoneCleaningCapability/start/set
+      payload: dfc73a5f-c20a-4cab-9276-342feec8639e
 clean_dining_room:
   alias: Dwayne Clean Dining Room
   sequence:
   - service: mqtt.publish
     data:
-      topic: valetudo/robot/ZoneCleaningCapability/start/set
-      payload: '[ "d281b5cc-1d76-447b-b26a-a5aacb973015" ]'
+      topic: valetudo/Dwayne/ZoneCleaningCapability/start/set
+      payload: aed1a81d-e4d2-469e-848d-9f75b5990d81
 clean_living_room:
   alias: Dwayne Clean Living Room
   sequence:
   - service: mqtt.publish
     data:
-      topic: valetudo/robot/ZoneCleaningCapability/start/set
-      payload: '[ "42fb1122-bc43-425f-b8b3-3bc8db83a02f" ]'
+      topic: valetudo/Dwayne/ZoneCleaningCapability/start/set
+      payload: bedbd79c-4bb9-496a-8598-3d210d551781
 clean_foyer:
   alias: Dwayne Clean Foyer
   sequence:
   - service: mqtt.publish
     data:
-      topic: valetudo/robot/ZoneCleaningCapability/start/set
-      payload: '[ "8bfe6a9f-5d10-4aef-83c8-2c7dc5b1a57b" ]'
-clean_hall:
-  alias: Dwayne Clean Hall
-  sequence:
-  - service: mqtt.publish
-    data:
-      topic: valetudo/robot/ZoneCleaningCapability/start/set
-      payload: '[ "f832adb8-cfde-4c82-a3e9-207640cb859e" ]'
+      topic: valetudo/Dwayne/ZoneCleaningCapability/start/set
+      payload: 7a2a6fad-682b-4bff-895a-1accb8732d0d
 clean_mop:
   alias: Dwayne Clean Mop
   sequence:
   - service: mqtt.publish
     data:
-      topic: valetudo/robot/ZoneCleaningCapability/start/set
-      payload: '[ "2429748f-1c23-4bd3-b06e-e7127cfbd1e5" ]'
+      topic: valetudo/Dwayne/ZoneCleaningCapability/start/set
+      payload: 0a327b45-2f4f-4df6-8388-4076088a9c10
 run_dwayne:
   alias: Dwayne Clean All
   sequence:
   - service: vacuum.start
     data:
-      entity_id: vacuum.robot
+      entity_id: vacuum.valetudo_dwayne
 empty_dwayne:
   alias: Move Dwayne to garbage
   sequence:
   - service: mqtt.publish
     data:
-      topic: valetudo/robot/GoToLocationCapability/go/set
-      payload: e233247e-a2aa-4ddc-b543-7174757e7d8e
+      topic: valetudo/Dwayne/GoToLocationCapability/go/set
+      payload: 465477a2-a946-4b43-bbba-c8667aec6fe7
 vacuum_all:
   sequence:
   - service: script.turn_on
@@ -285,5 +278,117 @@ chore_notification:
         data:
           chore_id: '{{ chore_id }}'
           done_by: '{{ user_id }}'
+  mode: parallel
+  max: 100
+
+camera_snapshot_notification:
+  description: Send a notification with a camera snapshot
+  fields:
+    camera:
+      name: Camera to Snapshot
+      description: The camera which creates the snapshot
+      example: camera.garage
+      selector:
+        entity:
+          domain: camera
+    notify_device:
+      description: What device to use for notification
+      example: mobile_app_cjs_phone
+    notification_title:
+      name: Notification title (Optional)
+      description: 'Default: "Something needs your attention!"'
+      default: "Something needs your attention!"
+    notification_message:
+      name: Notification message (Optional)
+      description: 'Default: "Would you like to do something?"'
+      default: "Would you like to do something?"
+    action_1_title:
+      name: First action name
+      description: Name of the first button
+      default: ""
+    action_1_uri:
+      name: URI for action 1 (Optional)
+      description: Optional URI for the first action
+      default: ""
+    action_1_action:
+      name: Action 1
+      description: "Action to run when the first action is clicked"
+      default: []
+      selector:
+        action:
+    action_2_title:
+      name: Second action name
+      description: Name of the second button
+      default: ""
+    action_2_uri:
+      name: URI for action 1 (Optional)
+      description: Optional URI for the second action
+      default: ""
+    action_2_action:
+      name: Action 2
+      description: Action to run when the second action is clicked"
+      default: []
+      selector:
+        action:
+    action_3_title:
+      name: Third action name
+      description: Name of the third button
+      default: ""
+    action_3_uri:
+      name: URI for action 3 (Optional)
+      description: Optional URI for the third action
+      default: ""
+    action_3_action:
+      name: Action 3
+      description: "Action to run when the third action is clicked"
+      default: []
+      selector:
+        action:
+  sequence:
+  - alias: Set up variables for the actions
+    variables:
+      snapshot_create_file_path: "/config/www/tmp/snapshot_{{ states[camera].object_id }}.jpg"
+      snapshot_access_file_path: "{{ snapshot_create_file_path | replace('/config/www','/local') }}"
+  - alias: Create snapshot
+    service: camera.snapshot
+    target:
+      entity_id: "{{ camera }}"
+    data:
+      filename: "{{ snapshot_create_file_path }}"
+  - alias: Send actionable notification
+    service: notify.{{ notify_device }}
+    data:
+      title: "{{ notification_title }}"
+      message: "{{ notification_message }}"
+      data:
+        image: "{{ snapshot_access_file_path }}"
+        actions: >
+          {% set titles = [action_1_title, action_2_title, action_3_title] %}
+          {% set uris = [action_1_uri, action_2_uri, action_3_uri] %}
+          {% set actions = [action_1_action, action_2_action, action_3_action] %}
+          {% set actions_data = namespace(data = []) %}
+
+          {% for title in titles %}
+            {% if title|length %}
+              {% set uri = uris[loop.index - 1] %}
+              {% set action = actions[loop.index - 1] %}
+              {% if uri|length %}
+                {% set action_data = {
+                  "action": "URI",
+                  "title": title,
+                  "uri": uri 
+                }
+                %}
+              {% else %}
+                {% set action_data = {
+                  "action": action,
+                  "title": title
+                  }
+                %}
+              {% endif %}
+              {% set actions_data.data = actions_data.data + [action_data] %}
+            {% endif %}
+          {% endfor %}
+          {{ actions_data.data }}
   mode: parallel
   max: 100
