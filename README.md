@@ -6,6 +6,7 @@
 # Overview
 This is my personal [Home Assistant](https://home-assistant.io) configuration. I first started my journey into home automation with home assistant version 0.70. After having been inspired by others many times over, I've finally cleaned up my configuration in hopes to inspire others. Most of my automation is done in node-red as it was more powerful when I first started. Moving forward, I am putting more automations directly into home assistant for ease of sharing with others, now that the built in automation system has matured.
 
+FTC disclosure: This readme contains affiliate links. If you feel I have provided you with value, please use one of my affiliate links. It costs you nothing, but helps me a lot! As an Amazon Associate I earn from qualifying purchases.
 # <a name="menu">Menu</a>
  | [Statistics](#statistics) | [Devices](#devices) |
 
